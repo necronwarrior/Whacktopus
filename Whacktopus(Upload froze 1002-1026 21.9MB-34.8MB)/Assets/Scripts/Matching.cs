@@ -1,18 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum state
-{
-	Under,
-	Stunned,
-	Jumping,
-	Cashed
-};
-
 public class Matching : MonoBehaviour {
 
 	private int clicks=0;
-	public state current=state.Under;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -26,27 +18,46 @@ public class Matching : MonoBehaviour {
 	void OnMouseDown(){
 		clicks++;
 		if (clicks == 1) {
-			current = state.Stunned;
+			this.GetComponent<States> ().current = state.Stunned;
 		}
 		if (clicks == 2) {
-			current = state.Cashed;
+			this.GetComponent<States> ().current = state.Cashed;
+
+			Cashedin ();
 		}
 	}
 
 	void Cashedin(){
+
+		Vector3 origin = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+		Collider[] Squidmatch = Physics.OverlapSphere (origin, 1f);
+		
+		int i = 0;
+		
+		while (i < Squidmatch.Length) {
+			if (Squidmatch [i].gameObject.tag == "Blue_Octopus" 
+			    && this.gameObject.tag == "Blue_Octopus"
+			    && Squidmatch [i].gameObject.GetComponent<States> ().current == state.Stunned
+			    && this.GetComponent<States> ().current == state.Cashed) {
+				Squidmatch [i].gameObject.GetComponent<States> ().current = state.Cashed;
+				Squidmatch [i].gameObject.GetComponent<Matching> ().Cashedin ();
+			}
+			i++;
+		}
+		
 		Destroy(this.gameObject);
 	}
 
-	void OnTriggerEnter(Collider collision) {
+	/*void OnTriggerStay(Collider collision) {
 		if (collision.gameObject.tag == "Blue_octopus" 
 			&& this.gameObject.tag == "Blue_octopus"
 			&& collision.gameObject.GetComponent<Matching> ().current == state.Cashed
 			&& this.current == state.Stunned) {
-			collision.gameObject.GetComponent<Matching>().Cashedin();
+			this.gameObject.GetComponent<Matching>().Cashedin();
 		}
 
 		if (clicks == 2) {
 			Cashedin ();
 		}
-	}
+	}*/
 }
