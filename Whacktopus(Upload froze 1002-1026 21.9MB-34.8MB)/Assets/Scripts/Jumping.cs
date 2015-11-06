@@ -11,21 +11,16 @@ public class Jumping : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		if(this.GetComponent<States> ().current == state.Under)//(jumpButtonDown && !jumping)
+		if(this.GetComponent<States> ().currentOctopus == OctopusState.Under)//(jumpButtonDown && !jumping)
 		{
-			//jumping = true;
-			StartCoroutine(JumpRoutine());
+		
 		}
 	}
 	
 	IEnumerator Example() {
-		this.GetComponent<States> ().current = state.Under;
+		this.GetComponent<States> ().currentOctopus = OctopusState.Under;
 		yield return new WaitForSeconds(Random.Range(5,20));
-		this.GetComponent<States> ().current = state.Jumping;
+		this.GetComponent<States> ().currentOctopus = OctopusState.Jumping;
 	}
 
-	IEnumerator JumpRoutine()
-	{
-
-	}
 }

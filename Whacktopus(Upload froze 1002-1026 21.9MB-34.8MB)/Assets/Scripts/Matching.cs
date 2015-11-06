@@ -18,10 +18,10 @@ public class Matching : MonoBehaviour {
 	void OnMouseDown(){
 		clicks++;
 		if (clicks == 1) {
-			this.GetComponent<States> ().current = state.Stunned;
+			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
 		}
 		if (clicks == 2) {
-			this.GetComponent<States> ().current = state.Cashed;
+			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 			Cashedin ();
 		}
@@ -37,9 +37,9 @@ public class Matching : MonoBehaviour {
 		while (i < Squidmatch.Length) {
 			if (Squidmatch [i].gameObject.tag == "Blue_Octopus" 
 			    && this.gameObject.tag == "Blue_Octopus"
-			    && Squidmatch [i].gameObject.GetComponent<States> ().current == state.Stunned
-			    && this.GetComponent<States> ().current == state.Cashed) {
-				Squidmatch [i].gameObject.GetComponent<States> ().current = state.Cashed;
+			    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
+			    && this.GetComponent<States> ().currentOctopus == OctopusState.Cashed) {
+				Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 				Squidmatch [i].gameObject.GetComponent<Matching> ().Cashedin ();
 			}
 			i++;
