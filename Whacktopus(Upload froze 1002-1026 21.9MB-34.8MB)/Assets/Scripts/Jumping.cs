@@ -5,7 +5,7 @@ public class Jumping : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Texture texture;
+
 	}
 	
 	// Update is called once per frame
@@ -20,19 +20,23 @@ public class Jumping : MonoBehaviour {
 			//get random number
 			float number = Random.Range(0,2000);
 
-			float chances = Time.deltaTime/20000;
+
 			//check for jumping
 			if( number < Time.deltaTime/20000)
 			{
+				//set type
+				this.GetComponent<States> ().currentType = Squaretype.Blue_Octopus;
+
 				//set to jumping and change color
 				this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Jumping;
 				this.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+
 			}
 		}
 
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) //currently jumping
 		{
-			//set current time jumpiing
+			//set current time jumping
 			this.gameObject.GetComponent<States> ().JumpTime += Time.deltaTime;
 
 			//check if jumptime has ended
@@ -47,7 +51,7 @@ public class Jumping : MonoBehaviour {
 
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) //currently stunned
 		{
-			//set current time jumpiing
+			//set current time jumping
 			this.gameObject.GetComponent<States> ().StunTime += Time.deltaTime;
 			
 			//check if jumptime has ended
@@ -55,6 +59,7 @@ public class Jumping : MonoBehaviour {
 			{
 				//set back to being under and change color
 				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
+				this.GetComponent<States> ().currentType = Squaretype.Empty;
 				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
 			}
 			
