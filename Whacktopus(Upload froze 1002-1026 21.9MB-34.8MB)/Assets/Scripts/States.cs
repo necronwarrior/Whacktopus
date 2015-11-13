@@ -18,9 +18,26 @@ public enum CheckState
 	CheckMatch
 }
 
+//The type of object in the grid space
+public enum Squaretype
+{
+	Empty,
+	Blue_Octopus
+}
+
+
 public class States : MonoBehaviour {
 	public OctopusState currentOctopus = OctopusState.Under;
 	public CheckState currentCheck = CheckState.None;
+
+	//TESTING setting all blocks at srtart to blue octtopuses
+	//public Squaretype currentType = Squaretype.Empty;
+	public Squaretype currentType = Squaretype.Blue_Octopus;
+
+
+	public float JumpTime = 0;
+	public float StunTime = 0;
+
 	// Use this for initialization
 	void Start () {
 	

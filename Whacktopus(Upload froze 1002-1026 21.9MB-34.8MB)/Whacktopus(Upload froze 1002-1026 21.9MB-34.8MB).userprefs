@@ -1,13 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Matching.cs">
     <Files>
-      <File FileName="Assets\Scripts\Matching.cs" Line="49" Column="3" />
-      <File FileName="Assets\Scripts\LoadMainMenu.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LoadMainGame.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LoadInstructionScreen.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\States.cs" Line="24" Column="32" />
-      <File FileName="Assets\Scripts\Jumping.cs" Line="17" Column="4" />
+      <File FileName="Assets\Scripts\Jumping.cs" Line="58" Column="5" />
+      <File FileName="Assets\Scripts\ExitGame.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Matching.cs" Line="32" Column="1" />
+      <File FileName="Assets\Scripts\States.cs" Line="39" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

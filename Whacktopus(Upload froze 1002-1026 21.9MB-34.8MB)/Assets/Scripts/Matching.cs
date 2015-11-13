@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Matching : MonoBehaviour {
 
-	private int clicks=0;
+	//private int clicks=0;
 
 	// Use this for initialization
 	void Start () {
@@ -15,12 +15,13 @@ public class Matching : MonoBehaviour {
 
 	}
 
+	//removed clicks
 	void OnMouseDown(){
-		clicks++;
-		if (clicks == 1) {
+		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) {
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
 		}
-		if (clicks == 2) {
+		else if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 			Cashedin ();
@@ -33,19 +34,34 @@ public class Matching : MonoBehaviour {
 		Collider[] Squidmatch = Physics.OverlapSphere (origin, 1f);
 		
 		int i = 0;
-		
+
+		//
 		while (i < Squidmatch.Length) {
-			if (Squidmatch [i].gameObject.tag == "Blue_Octopus" 
-			    && this.gameObject.tag == "Blue_Octopus"
+			//check if squids are the same type and ready for cashing in
+			if (Squidmatch [i].gameObject.GetComponent<States> ().currentType == Squaretype.Blue_Octopus
+			    && this.gameObject.GetComponent<States> ().currentType == Squaretype.Blue_Octopus
 			    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 			    && this.GetComponent<States> ().currentOctopus == OctopusState.Cashed) {
 				Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 				Squidmatch [i].gameObject.GetComponent<Matching> ().Cashedin ();
 			}
+			/* The following was removed and changed to the avbove to accomodate the new type variable state and
+			 if (Squidmatch [i].gameObject.tag == "Blue_Octopus" 
+			    && this.gameObject.tag == "Blue_Octopus"
+			    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
+			    && this.GetComponent<States> ().currentOctopus == OctopusState.Cashed) {
+				Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
+				Squidmatch [i].gameObject.GetComponent<Matching> ().Cashedin ();
+			}*/
 			i++;
 		}
-		
-		Destroy(this.gameObject);
+
+		//reset back to under
+		this.GetComponent<States> ().currentOctopus = OctopusState.Under;
+		this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+
+		//removed so i can reset to normal
+		//Destroy(this.gameObject);
 	}
 
 	/*void OnTriggerStay(Collider collision) {
