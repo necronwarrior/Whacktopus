@@ -15,13 +15,21 @@ public class Matching : MonoBehaviour {
 
 	}
 
-	//removed clicks
+	void OnMouseUp(){
+
+	}
+	//removed clicks counter
 	void OnMouseDown(){
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) {
+			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
 			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
+			//set checkmatches flag
+			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 		}
 		else if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+			//cash in
+
 			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 			Cashedin ();
@@ -35,16 +43,22 @@ public class Matching : MonoBehaviour {
 		
 		int i = 0;
 
+		var TwoCashIn = false;
 		//
-		while (i < Squidmatch.Length) {
+		while (i < Squidmatch.Length && TwoCashIn == false) {
 			//check if squids are the same type and ready for cashing in
-			if (Squidmatch [i].gameObject.GetComponent<States> ().currentType == Squaretype.Blue_Octopus
-			    && this.gameObject.GetComponent<States> ().currentType == Squaretype.Blue_Octopus
-			    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-			    && this.GetComponent<States> ().currentOctopus == OctopusState.Cashed) {
+			if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == Squaretype.Blue_Octopus
+			    && this.gameObject.GetComponent<States> ().currentType == Squaretype.Blue_Octopus)
+			    && (Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
+			    && this.GetComponent<States> ().currentOctopus == OctopusState.Cashed)) {
 				Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-				Squidmatch [i].gameObject.GetComponent<Matching> ().Cashedin ();
+				//reset back to under
+				Squidmatch [i].GetComponent<States> ().currentOctopus = OctopusState.Under;
+				Squidmatch [i].gameObject.GetComponent<Renderer>().material.color = Color.white;
+
+				TwoCashIn = true;
 			}
+
 			/* The following was removed and changed to the avbove to accomodate the new type variable state and
 			 if (Squidmatch [i].gameObject.tag == "Blue_Octopus" 
 			    && this.gameObject.tag == "Blue_Octopus"
@@ -59,6 +73,12 @@ public class Matching : MonoBehaviour {
 		//reset back to under
 		this.GetComponent<States> ().currentOctopus = OctopusState.Under;
 		this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+
+		if (TwoCashIn == true) {
+
+		} else {
+
+		}
 
 		//removed so i can reset to normal
 		//Destroy(this.gameObject);
