@@ -7,6 +7,7 @@ public enum OctopusState
 	Under,
 	Stunned,
 	Jumping,
+	Picked,
 	Cashed
 };
 
