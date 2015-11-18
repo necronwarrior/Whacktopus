@@ -20,19 +20,20 @@ public class Matching : MonoBehaviour {
 	}
 	//removed clicks counter
 	void OnMouseDown(){
-		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) {
+			if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) {
 			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
+			this.gameObject.GetComponent<Renderer> ().material.color = Color.red;
 			//set checkmatches flag
 			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
-		}
-		else if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
-			//cash in
+		} else if (Input.GetMouseButtonUp(0)) {
+			if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+				//cash in
 
-			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
+				this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
-			Cashedin ();
+				Cashedin ();
+			}
 		}
 	}
 
