@@ -18,7 +18,7 @@ public class Jumping : MonoBehaviour {
 			this.gameObject.GetComponent<States> ().StunTime = 0;
 
 			//get random number
-			float number = Random.Range(0,2000);
+			float number = Random.Range(0,200);
 
 
 			//check for jumping

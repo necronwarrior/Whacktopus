@@ -19,29 +19,57 @@ public class Swapping : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		
 		if (clicked == true) {
-			FollowDrag();
+			if (Input.GetMouseButton (0)) {
+				FollowDrag ();
+			}
+		
+			if (Input.GetMouseButtonUp (0)) {
+				RaycastHit hit;
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+				// Save current object layer
+				int oldLayer = gameObject.layer;
+				
+				//Change object layer to a layer it will be alone
+				gameObject.layer = 8;
+				
+				int layerToIgnore = gameObject.layer;
+				//layerToIgnore = ~layerToIgnore;
+
+				if(Physics.Raycast(ray, out hit, layerToIgnore))
+				{
+					if (hit.collider != null){
+						this.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
+						hit.collider.transform.position = new Vector3 (click_reset.x,click_reset.y,click_reset.z);
+
+
+						clicked = !clicked;
+						gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+						gameObject.layer = oldLayer;
+					}
+				}
+				else{
+				clicked = !clicked;
+				if (clicked == false) {
+					gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+					gameObject.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+				}
+				}
+			}
 		}
 	}
 
 	void OnMouseDown() {
-		clicked = !clicked;
-		if (Input.GetMouseButton(0)) 
+		
+		if (gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned) 
 		{
-			if (gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned) 
+			clicked = !clicked;
+			if (clicked == true)
 			{
-				if (clicked == true)
-				{
-					gameObject.GetComponent<States> ().currentOctopus = OctopusState.Picked;
-					click_reset = gameObject.transform.position;
-				}
-			}
-		}
-		if (Input.GetMouseButton (0)) 
-		{
-			if (clicked == false) {
-				gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-				gameObject.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+				gameObject.GetComponent<States> ().currentOctopus = OctopusState.Picked;
+				click_reset = gameObject.transform.position;
 			}
 		}
 	}
