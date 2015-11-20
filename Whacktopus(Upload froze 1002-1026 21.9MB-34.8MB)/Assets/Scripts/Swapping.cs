@@ -15,11 +15,12 @@ public class Swapping : MonoBehaviour {
 	void Start () {
 		clicked = false;
 		clicks = 0;
-	}
+	} 
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		
+
+
 		if (clicked == true) {
 			if (Input.GetMouseButton (0)) {
 				FollowDrag ();
@@ -27,27 +28,27 @@ public class Swapping : MonoBehaviour {
 		
 			if (Input.GetMouseButtonUp (0)) {
 				RaycastHit hit;
-				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				Ray ray = new Ray(new Vector3 (gameObject.transform.position.x, (gameObject.transform.position.y-1.0f), (gameObject.transform.position.z+1.0f)), new Vector3(0.0f,-2.0f,+0.5f));
 
-				// Save current object layer
-				int oldLayer = gameObject.layer;
-				
-				//Change object layer to a layer it will be alone
-				gameObject.layer = 8;
-				
-				int layerToIgnore = gameObject.layer;
-				//layerToIgnore = ~layerToIgnore;
-
-				if(Physics.Raycast(ray, out hit, layerToIgnore))
+				if(Physics.Raycast(ray, out hit))
 				{
-					if (hit.collider != null){
+					if (hit.collider != null)
+					{
+						bool fool = ((click_reset.z-1.5f <= hit.collider.gameObject.transform.position.z)
+						             || (hit.collider.gameObject.transform.position.z >= click_reset.z+1.5f)
+						             && hit.collider.gameObject.transform.position.x == click_reset.x);
+						bool rule =((click_reset.x-1.5f <= hit.collider.gameObject.transform.position.x)
+							         ||(hit.collider.gameObject.transform.position.x >= click_reset.x+1.5f)
+							&& hit.collider.gameObject.transform.position.z == click_reset.z);
+
+						if (fool ==true || rule ==true){
 						this.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
 						hit.collider.transform.position = new Vector3 (click_reset.x,click_reset.y,click_reset.z);
 
 
 						clicked = !clicked;
 						gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-						gameObject.layer = oldLayer;
+						}
 					}
 				}
 				else{
