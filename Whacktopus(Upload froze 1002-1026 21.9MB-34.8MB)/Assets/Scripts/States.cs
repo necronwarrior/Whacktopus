@@ -38,6 +38,7 @@ public class States : MonoBehaviour {
 
 	public float JumpTime = 0;
 	public float StunTime = 0;
+	public float CashTime = 0;
 
 	// Use this for initialization
 	void Start () {
