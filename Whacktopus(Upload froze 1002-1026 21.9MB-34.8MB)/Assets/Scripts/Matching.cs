@@ -13,7 +13,7 @@ public class Matching : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//check if a match check is needed for current object
-		if (this.GetComponent<States> ().currentCheck == CheckState.CheckMatch) {
+		if (this.GetComponent<States> ().currentCheck == CheckState.CheckMatch && this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			//set matches for each direction to 0
 			int upmatch = 0;
 			int downmatch = 0;
@@ -335,12 +335,11 @@ public class Matching : MonoBehaviour {
 			if (totalmatch >=3){
 				
 			}
-			
-		}
-		
-		//set current check to none
-		this.GetComponent<States> ().currentCheck = CheckState.None;
-		
+
+
+			//set current check to none
+			this.GetComponent<States> ().currentCheck = CheckState.None;
+		}		
 	}
 
 	void OnMouseUp(){
@@ -355,7 +354,7 @@ public class Matching : MonoBehaviour {
 			//set checkmatches flag
 			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 		}
-		else if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+		else if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned && this.GetComponent<Swapping>().clicked == false) {
 			//cash in
 			
 			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;

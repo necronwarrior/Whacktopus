@@ -84,11 +84,5 @@ public class Jumping : MonoBehaviour {
 		}
 
 	}
-	
-	/*IEnumerator Example() {
-		this.GetComponent<States> ().currentOctopus = OctopusState.Under;
-		yield return new WaitForSeconds(Random.Range(5,20));
-		this.GetComponent<States> ().currentOctopus = OctopusState.Jumping;
-	}*/
 
 }
