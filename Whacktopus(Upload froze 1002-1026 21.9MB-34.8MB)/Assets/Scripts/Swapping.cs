@@ -10,6 +10,7 @@ public class Swapping : MonoBehaviour {
 	public bool clicked;
 	public bool SetToClicked;
 
+	public int numclicks;
 	public float MouseTimer;
 	public float ClickTimer; 
 	public bool MouseClick;
@@ -25,6 +26,9 @@ public class Swapping : MonoBehaviour {
 		MouseHeld = false;
 		MouseHeldDrop = false;
 		SetToClicked = false;
+		numclicks = 0;
+
+		click_reset = gameObject.transform.position;
 	} 
 	
 	// Update is called once per frame
@@ -34,6 +38,15 @@ public class Swapping : MonoBehaviour {
 		MouseClick = false;
 		MouseHeldDrop = false;
 
+		//test for misplaced cubes
+		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
+		foreach (var obj in objects) {
+			if (obj.gameObject.GetComponent<Swapping> ().clicked == false && obj.gameObject.transform.position.y != 0){
+				//reset object position
+				obj.gameObject.transform.position = obj.gameObject.GetComponent<Swapping> ().click_reset;
+			}
+		}
+
 		//ray test for current object
 		Ray ray2 = Camera.main.ScreenPointToRay( Input.mousePosition );
 		RaycastHit hit2;
@@ -41,19 +54,28 @@ public class Swapping : MonoBehaviour {
 		if( Physics.Raycast( ray2, out hit2, 100 ) && clicked == true ){
 
 			if (Input.GetMouseButton (0)) {
+
+
 				//update current mouse down time
+				hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
 				MouseTimer += Time.deltaTime;
 				if (MouseTimer > ClickTimer) {
 					MouseHeld = true;
-					hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
+					if (clicked == true){
+ 						hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
+					}
 				}
 			} else {
 				//check if previously held
 				if (MouseTimer > 0){
 					if (MouseTimer < ClickTimer) {
 						MouseClick = true;
-						hit2.transform.gameObject.GetComponent<Matching> ().TestCashin();
-						hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
+						if (clicked == true){
+							if (numclicks ==1){
+								hit2.transform.gameObject.GetComponent<Matching> ().TestCashin();
+							}
+							hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
+						}
 					}
 					else {
 						MouseHeld = false;
@@ -77,38 +99,44 @@ public class Swapping : MonoBehaviour {
 
 					if (Physics.Raycast (ray, out hit)) {
 						if (hit.collider != null) {
-							bool fool = ((click_reset.z - 1.5f <= hit.collider.gameObject.transform.position.z)
-								|| (hit.collider.gameObject.transform.position.z >= click_reset.z + 1.5f)
+							bool fool = (((click_reset.z - 1.5f == hit.collider.gameObject.transform.position.z)
+								|| (hit.collider.gameObject.transform.position.z == click_reset.z + 1.5f))
 								&& hit.collider.gameObject.transform.position.x == click_reset.x);
-							bool rule = ((click_reset.x - 1.5f <= hit.collider.gameObject.transform.position.x)
-								|| (hit.collider.gameObject.transform.position.x >= click_reset.x + 1.5f)
+							bool rule = (((click_reset.x - 1.5f == hit.collider.gameObject.transform.position.x)
+								|| (hit.collider.gameObject.transform.position.x == click_reset.x + 1.5f))
 								&& hit.collider.gameObject.transform.position.z == click_reset.z);
 
 							if (fool == true || rule == true) {
-								this.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
+								hit2.transform.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
 								hit.collider.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+
+								//set new click resets
+								hit2.transform.gameObject.GetComponent<Swapping> ().click_reset = hit2.transform.gameObject.transform.position;
+								hit.collider.transform.gameObject.GetComponent<Swapping> ().click_reset = hit.collider.transform.position;
 
 								//set checkstates
 								hit2.transform.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 								hit.collider.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 
-								hit2.transform.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+								hit2.transform.gameObject.GetComponent<States> ().currentOctopus = hit2.transform.gameObject.GetComponent<States> ().PrevState;
 							}
 						}
 					} else {
-						hit2.transform.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+
 						hit2.transform.gameObject.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
-					}
-					if (clicked == false && hit2.transform.gameObject.GetComponent<States> ().currentOctopus != OctopusState.Stunned || hit2.transform.gameObject.GetComponent<States> ().currentOctopus != OctopusState.Under){
-						hit2.transform.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+						hit2.transform.gameObject.GetComponent<States> ().currentOctopus = hit2.transform.gameObject.GetComponent<States> ().PrevState;
 					}
 				}
 			}
 		}
-		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
-		foreach (var obj in objects) {
-			if (obj.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Picked){
-				obj.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+		if (!Input.GetMouseButton(0)) {
+			clicked = false;
+		}
+		if (clicked == false) {
+			foreach (var obj in objects) {
+				if (obj.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Picked && obj.gameObject.GetComponent<Swapping> ().clicked == false) {
+					obj.gameObject.GetComponent<States> ().currentOctopus = obj.gameObject.GetComponent<States> ().PrevState;
+				}
 			}
 		}
 
@@ -116,26 +144,31 @@ public class Swapping : MonoBehaviour {
 
 	void OnMouseDown() {
 
+		//set numclicks to 1
+		numclicks = 1;
+
 		//set thgis object to clicked
 		SetToClicked = true;
 		clicked = true;
 
-		click_reset = this.gameObject.transform.position;
-
-		//ray test for current object
-		Ray ray2 = Camera.main.ScreenPointToRay( Input.mousePosition );
-		RaycastHit hit2;
-
 		if (gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+
 			//set current object as being clicked
-			this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Picked;
-			this.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
+			if(MouseHeld == true){
+				if (gameObject.GetComponent<States> ().currentOctopus != OctopusState.Picked) {
+					//store prev stae
+					gameObject.GetComponent<States> ().PrevState = gameObject.GetComponent<States> ().currentOctopus;
+				   	gameObject.GetComponent<States> ().currentOctopus = OctopusState.Picked;
+				}
+			}
+			gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 		}
 
 		//set all other objects clicked to false
 		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
 		foreach (var obj in objects) {
 			if (obj.gameObject.GetComponent<Swapping> ().SetToClicked == false){
+				obj.gameObject.transform.position = obj.gameObject.GetComponent<Swapping> ().click_reset;
 				obj.gameObject.GetComponent<Swapping> ().clicked = false;
 			}
 		}
@@ -146,6 +179,12 @@ public class Swapping : MonoBehaviour {
 
 	void FollowDrag() 
 	{
+		//set object to being picked up
+		if (gameObject.GetComponent<States> ().currentOctopus != OctopusState.Picked) {
+			gameObject.GetComponent<States> ().PrevState = gameObject.GetComponent<States> ().currentOctopus;
+			gameObject.GetComponent<States> ().currentOctopus = OctopusState.Picked;
+		}
+
 		Vector3 mouseInp = Input.mousePosition;
 			
 		world_pos = Camera.main.ScreenToWorldPoint(new Vector3(mouseInp.x, mouseInp.y, (6.8f+(gameObject.transform.position.z/2.5f))));

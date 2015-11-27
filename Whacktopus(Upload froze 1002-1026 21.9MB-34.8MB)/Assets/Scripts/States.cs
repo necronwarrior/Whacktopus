@@ -29,6 +29,8 @@ public enum Squaretype
 
 public class States : MonoBehaviour {
 	public OctopusState currentOctopus = OctopusState.Under;
+	//notes what the previous state was (for picking and moving)
+	public OctopusState PrevState = OctopusState.Under;
 	public CheckState currentCheck = CheckState.None;
 
 	//TESTING setting all blocks at srtart to blue octtopuses

@@ -208,7 +208,7 @@ public class Matching : MonoBehaviour {
 									j=0;
 									
 									//check up one more space
-									while (j < Squidmatch.Length) {
+									while (j < SecondSquidmatch.Length) {
 										
 										//checkup
 										//check if Octopuses are the same type and stunned
@@ -240,11 +240,11 @@ public class Matching : MonoBehaviour {
 									j=0;
 									
 									//check down one more space
-									while (j < Squidmatch.Length) {
+									while (j < SecondSquidmatch.Length) {
 										
 										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.position.z < Squidmatch [i].gameObject.transform.position.z 
-										    && SecondSquidmatch [j].gameObject.transform.position.x == Squidmatch [i].gameObject.transform.position.x)) {
+										if ((SecondSquidmatch [j].gameObject.transform.position.z < Squidmatch [i].gameObject.transform.position.z) 
+										    && (SecondSquidmatch [j].gameObject.transform.position.x == Squidmatch [i].gameObject.transform.position.x)) {
 											
 											//increase match counter
 											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
@@ -275,12 +275,12 @@ public class Matching : MonoBehaviour {
 									j=0;
 									
 									//check one more space
-									while (j < Squidmatch.Length) {
+									while (j < SecondSquidmatch.Length) {
 										
 										//checkright
 										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.position.x > Squidmatch [i].gameObject.transform.position.x 
-										    && SecondSquidmatch [j].gameObject.transform.position.z == Squidmatch [i].gameObject.transform.position.z)) {
+										if ((SecondSquidmatch [j].gameObject.transform.position.x > Squidmatch [i].gameObject.transform.position.x) 
+										    && (SecondSquidmatch [j].gameObject.transform.position.z == Squidmatch [i].gameObject.transform.position.z)) {
 											
 											//increase match counter
 											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
@@ -361,12 +361,15 @@ public class Matching : MonoBehaviour {
 
 	//test to see if octopus can be stunned
 	public void TestStun(){
-		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) {
+		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping && this.GetComponent<Swapping>().clicked ==true) {
 			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
 			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
 			//set checkmatches flag
 			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
+
+			//set numclicks to 0
+			this.GetComponent<Swapping>().numclicks = 0;
 		}
 	}
 
