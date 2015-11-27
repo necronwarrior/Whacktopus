@@ -8,6 +8,7 @@ public class Swapping : MonoBehaviour {
 	public Vector3 world_pos, click_reset;
 
 	public bool clicked;
+	public bool SetToClicked;
 
 	public float MouseTimer;
 	public float ClickTimer; 
@@ -23,6 +24,7 @@ public class Swapping : MonoBehaviour {
 		MouseClick = false;
 		MouseHeld = false;
 		MouseHeldDrop = false;
+		SetToClicked = false;
 	} 
 	
 	// Update is called once per frame
@@ -32,83 +34,114 @@ public class Swapping : MonoBehaviour {
 		MouseClick = false;
 		MouseHeldDrop = false;
 
-		if (Input.GetMouseButton (0)) {
-			//update current mouse down time
-			MouseTimer += Time.deltaTime;
-			if (MouseTimer > ClickTimer) {
-				MouseHeld = true;
-			}
-		} else {
-			//check if previously held
-			if (MouseTimer > 0){
-				if (MouseTimer < ClickTimer) {
-					MouseClick = true;
+		//ray test for current object
+		Ray ray2 = Camera.main.ScreenPointToRay( Input.mousePosition );
+		RaycastHit hit2;
+
+		if( Physics.Raycast( ray2, out hit2, 100 ) && clicked == true ){
+
+			if (Input.GetMouseButton (0)) {
+				//update current mouse down time
+				MouseTimer += Time.deltaTime;
+				if (MouseTimer > ClickTimer) {
+					MouseHeld = true;
+					hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
 				}
-				else {
-					MouseHeld = false;
-					MouseHeldDrop = true;
-				}
-			}
-			//reset mouse timer
-			MouseTimer = 0;
-		}
-
-		if (clicked == true) {
-			if (Input.GetMouseButtonUp(0)){
-				clicked = false;
-			}
-			if (MouseHeld == true) {
-				FollowDrag ();
-			}
-			if (MouseHeldDrop == true && Input.GetMouseButtonUp (0)) {
-				RaycastHit hit;
-				Ray ray = new Ray (new Vector3 (this.gameObject.transform.position.x, (this.gameObject.transform.position.y - 1.0f), (this.gameObject.transform.position.z + 1.0f)), new Vector3 (0.0f, -2.0f, +0.5f));
-
-				if (Physics.Raycast (ray, out hit)) {
-					if (hit.collider != null) {
-						bool fool = ((click_reset.z - 1.5f <= hit.collider.gameObject.transform.position.z)
-							|| (hit.collider.gameObject.transform.position.z >= click_reset.z + 1.5f)
-							&& hit.collider.gameObject.transform.position.x == click_reset.x);
-						bool rule = ((click_reset.x - 1.5f <= hit.collider.gameObject.transform.position.x)
-							|| (hit.collider.gameObject.transform.position.x >= click_reset.x + 1.5f)
-							&& hit.collider.gameObject.transform.position.z == click_reset.z);
-
-						if (fool == true || rule == true) {
-							this.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
-							hit.collider.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
-
-							//set checkstates
-							this.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
-							hit.collider.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
-
-							this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-						}
+			} else {
+				//check if previously held
+				if (MouseTimer > 0){
+					if (MouseTimer < ClickTimer) {
+						MouseClick = true;
+						hit2.transform.gameObject.GetComponent<Matching> ().TestCashin();
+						hit2.transform.gameObject.GetComponent<Matching> ().TestStun();
 					}
-				} else {
-					this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-					this.gameObject.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+					else {
+						MouseHeld = false;
+						MouseHeldDrop = true;
+					}
 				}
-				if (clicked == false && this.gameObject.GetComponent<States> ().currentOctopus != OctopusState.Stunned || this.gameObject.GetComponent<States> ().currentOctopus != OctopusState.Under){
-					this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+				//reset mouse timer
+				MouseTimer = 0;
+			}
+
+			if (clicked == true) {
+				if (Input.GetMouseButtonUp(0)){
+					clicked = false;
+				}
+				if (MouseHeld == true) {
+					FollowDrag ();
+				}
+				if (MouseHeldDrop == true && Input.GetMouseButtonUp (0)) {
+					RaycastHit hit;
+					Ray ray = new Ray (new Vector3 (gameObject.transform.position.x, (gameObject.transform.position.y - 1.0f), (gameObject.transform.position.z + 1.0f)), new Vector3 (0.0f, -2.0f, +0.5f));
+
+					if (Physics.Raycast (ray, out hit)) {
+						if (hit.collider != null) {
+							bool fool = ((click_reset.z - 1.5f <= hit.collider.gameObject.transform.position.z)
+								|| (hit.collider.gameObject.transform.position.z >= click_reset.z + 1.5f)
+								&& hit.collider.gameObject.transform.position.x == click_reset.x);
+							bool rule = ((click_reset.x - 1.5f <= hit.collider.gameObject.transform.position.x)
+								|| (hit.collider.gameObject.transform.position.x >= click_reset.x + 1.5f)
+								&& hit.collider.gameObject.transform.position.z == click_reset.z);
+
+							if (fool == true || rule == true) {
+								this.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
+								hit.collider.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+
+								//set checkstates
+								hit2.transform.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
+								hit.collider.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
+
+								hit2.transform.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+							}
+						}
+					} else {
+						hit2.transform.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+						hit2.transform.gameObject.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+					}
+					if (clicked == false && hit2.transform.gameObject.GetComponent<States> ().currentOctopus != OctopusState.Stunned || hit2.transform.gameObject.GetComponent<States> ().currentOctopus != OctopusState.Under){
+						hit2.transform.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+					}
 				}
 			}
 		}
-		if (clicked == false && this.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Picked){
-			gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
+		foreach (var obj in objects) {
+			if (obj.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Picked){
+				obj.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+			}
 		}
+
 	}
 
 	void OnMouseDown() {
-		
-		if (gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned) 
-		{
+
+		//set thgis object to clicked
+		SetToClicked = true;
+		clicked = true;
+
+		click_reset = this.gameObject.transform.position;
+
+		//ray test for current object
+		Ray ray2 = Camera.main.ScreenPointToRay( Input.mousePosition );
+		RaycastHit hit2;
+
+		if (gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			//set current object as being clicked
-			clicked = true;
 			this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Picked;
 			this.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
-			click_reset = this.gameObject.transform.position;
-
 		}
+
+		//set all other objects clicked to false
+		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
+		foreach (var obj in objects) {
+			if (obj.gameObject.GetComponent<Swapping> ().SetToClicked == false){
+				obj.gameObject.GetComponent<Swapping> ().clicked = false;
+			}
+		}
+
+		SetToClicked = false;
+
 	}
 
 	void FollowDrag() 

@@ -3,8 +3,7 @@ using System.Collections;
 
 public class Matching : MonoBehaviour {
 	
-	//private int clicks=0;
-	
+
 	// Use this for initialization
 	void Start () {
 		
@@ -347,6 +346,21 @@ public class Matching : MonoBehaviour {
 	}
 	//removed clicks counter
 	void OnMouseDown(){
+
+	}
+
+	//test to see if octopus can be cashed in
+	public void TestCashin(){
+		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+			//cash in
+			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
+			
+			Cashedin ();
+		}
+	}
+
+	//test to see if octopus can be stunned
+	public void TestStun(){
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping) {
 			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
@@ -354,15 +368,10 @@ public class Matching : MonoBehaviour {
 			//set checkmatches flag
 			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 		}
-		else if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned && this.GetComponent<Swapping>().clicked == false) {
-			//cash in
-			
-			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-			
-			Cashedin ();
-		}
 	}
-	
+
+
+
 	void Cashedin(){
 		
 		Vector3 origin = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
