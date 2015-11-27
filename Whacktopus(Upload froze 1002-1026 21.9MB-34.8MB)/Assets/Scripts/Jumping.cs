@@ -11,11 +11,29 @@ public class Jumping : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
+
+		//clear cashed
+		if (this.GetComponent<States> ().currentOctopus == OctopusState.Cashed) //currently stunned
+		{
+			//set current time jumping
+			this.gameObject.GetComponent<States> ().CashTime += Time.deltaTime;
+			
+			//check if jumptime has ended
+			if (this.gameObject.GetComponent<States> ().CashTime >= 0)
+			{
+				//set back to being under and change color
+				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
+				this.GetComponent<States> ().currentType = Squaretype.Empty;
+				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+			}
+			
+		}
 		if(this.GetComponent<States> ().currentOctopus == OctopusState.Under)//if in a position to jump
 		{
 			//reset timers
 			this.gameObject.GetComponent<States> ().JumpTime = 0;
 			this.gameObject.GetComponent<States> ().StunTime = 0;
+			this.gameObject.GetComponent<States> ().CashTime = 0;
 
 			//get random number
 			float number = Random.Range(0,200);
@@ -66,11 +84,5 @@ public class Jumping : MonoBehaviour {
 		}
 
 	}
-	
-	/*IEnumerator Example() {
-		this.GetComponent<States> ().currentOctopus = OctopusState.Under;
-		yield return new WaitForSeconds(Random.Range(5,20));
-		this.GetComponent<States> ().currentOctopus = OctopusState.Jumping;
-	}*/
 
 }
