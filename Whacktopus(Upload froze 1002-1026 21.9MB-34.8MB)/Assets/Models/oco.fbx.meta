@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 46ff05c04086c8b49ba6842695529482
-timeCreated: 1452865152
+guid: ed80d45337c911f44bc5358352670e0e
+timeCreated: 1452868286
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -10,6 +10,7 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Cylinder001
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -33,7 +34,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 13
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -67,7 +68,7 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   additionalBone: 0
   userData: 
   assetBundleName: 

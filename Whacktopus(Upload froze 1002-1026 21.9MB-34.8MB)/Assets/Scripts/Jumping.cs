@@ -36,7 +36,7 @@ public class Jumping : MonoBehaviour {
 			this.gameObject.GetComponent<States> ().CashTime = 0;
 
 			//get random number
-			float number = Random.Range(0,200);
+			float number = Random.Range(0,400);
 
 
 			//check for jumping
