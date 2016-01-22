@@ -3,14 +3,17 @@ using System.Collections;
 
 public class PlayVideo : MonoBehaviour {
 
+	MovieTexture Water;
+
 	// Use this for initialization
 	void Start () {
-		((MovieTexture)GetComponent<Renderer>().material.mainTexture).Play();
 
+		Water =  ((MovieTexture)GetComponent<Renderer>().material.mainTexture);
+		Water.loop = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		Water.Play ();
 	}
 }

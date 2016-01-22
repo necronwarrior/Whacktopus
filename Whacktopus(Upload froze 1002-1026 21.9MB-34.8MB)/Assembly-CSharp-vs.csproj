@@ -48,6 +48,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\ExitGame.cs" />
      <Compile Include="Assets\Scripts\Jumping.cs" />
+     <Compile Include="Assets\Scripts\LoadGameScreen.cs" />
+     <Compile Include="Assets\Scripts\LoadInstructionScreen.cs" />
+     <Compile Include="Assets\Scripts\LoadMenuScreen.cs" />
      <Compile Include="Assets\Scripts\Matching.cs" />
      <Compile Include="Assets\Scripts\PauseScript.cs" />
      <Compile Include="Assets\Scripts\PlayVideo.cs" />
