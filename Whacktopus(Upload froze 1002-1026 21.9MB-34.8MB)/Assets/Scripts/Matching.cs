@@ -336,7 +336,10 @@ public class Matching : MonoBehaviour {
 				/*switch (totalmatch)
 				{
 				case 3:
-					points += 600;
+					var go = GameObject.Find("Scripts");
+					this.GetComponent<InGameGlobals>.AddPoints(600);
+					break;
+				/*	points += 600;
 					break;
 				case 4:
 					points += 1200;
@@ -356,8 +359,9 @@ public class Matching : MonoBehaviour {
 				case 9:
 					points += 9001;
 					break;
+
 				}
-				*/
+*/
 			}
 
 
