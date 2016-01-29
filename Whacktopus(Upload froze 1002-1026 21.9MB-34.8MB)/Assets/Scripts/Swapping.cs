@@ -95,8 +95,8 @@ public class Swapping : MonoBehaviour {
 				}
 				if (MouseHeldDrop == true && Input.GetMouseButtonUp (0)) {
 					RaycastHit hit;
-					Ray ray = new Ray (new Vector3 (gameObject.transform.position.x, (gameObject.transform.position.y - 1.0f), (gameObject.transform.position.z + 1.0f)), new Vector3 (0.0f, -2.0f, +0.5f));
-
+					Ray ray = new Ray (new Vector3 (gameObject.transform.position.x, (gameObject.transform.position.y ), (gameObject.transform.position.z )), new Vector3 (0.0f, -3.0f, +1.7f));
+					Debug.DrawRay(ray.origin, ray.direction*3, Color.green, 5.0f);
 					if (Physics.Raycast (ray, out hit)) {
 						if (hit.collider != null) {
 							bool fool = (((click_reset.z - 1.5f == hit.collider.gameObject.transform.position.z)
