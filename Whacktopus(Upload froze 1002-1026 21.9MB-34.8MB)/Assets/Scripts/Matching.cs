@@ -2,15 +2,17 @@
 using System.Collections;
 
 public class Matching : MonoBehaviour {
-	
+
+	GameObject Points;
 
 	// Use this for initialization
 	void Start () {
-		
+		Points = GameObject.Find ("Scripts");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 		//check if a match check is needed for current object
 		if (this.GetComponent<States> ().currentCheck == CheckState.CheckMatch && this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			//set matches for each direction to 0
@@ -333,35 +335,32 @@ public class Matching : MonoBehaviour {
 			//score points if match >=3
 			if (totalmatch >=3){
 				//attach to global
-				/*switch (totalmatch)
+				switch (totalmatch)
 				{
 				case 3:
-					var go = GameObject.Find("Scripts");
-					this.GetComponent<InGameGlobals>.AddPoints(600);
-					break;
-				/*	points += 600;
+					Points.GetComponent<InGameGlobals>().AddPoints(600);
 					break;
 				case 4:
-					points += 1200;
+					Points.GetComponent<InGameGlobals>().AddPoints(1200);
 					break;
 				case 5:
-					points += 2000;
+					Points.GetComponent<InGameGlobals>().AddPoints(2000);
 					break;
 				case 6:
-					points += 3000;
+					Points.GetComponent<InGameGlobals>().AddPoints(3000);
 					break;
 				case 7:
-					points += 4200;
+					Points.GetComponent<InGameGlobals>().AddPoints(4200);
 					break;
 				case 8:
-					points += 5600;
+					Points.GetComponent<InGameGlobals>().AddPoints(5600);
 					break;
 				case 9:
-					points += 9001;
+					Points.GetComponent<InGameGlobals>().AddPoints(9001);
 					break;
 
 				}
-*/
+
 			}
 
 
@@ -431,13 +430,13 @@ public class Matching : MonoBehaviour {
 
 		//score points
 		//attach to global
-		/*
+
 		if (TwoCashIn == true) {
-			points += 100;
+			Points.GetComponent<InGameGlobals>().AddPoints(300);
 		} else {
-			points += 300;
+			Points.GetComponent<InGameGlobals>().AddPoints(100);
 		}
-		*/
+
 	}
 	
 

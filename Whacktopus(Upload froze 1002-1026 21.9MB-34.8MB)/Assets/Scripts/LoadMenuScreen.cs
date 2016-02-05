@@ -8,13 +8,17 @@ public class LoadMenuScreen : MonoBehaviour {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	public void OnClick () {
-		StartCoroutine(Example());
+
+	public void GameEnd () {
+		StartCoroutine(LoadLVL());
 	}
 
-	IEnumerator Example() {
+	// Update is called once per frame
+	public void OnClick () {
+		StartCoroutine(LoadLVL());
+	}
+
+	IEnumerator LoadLVL() {
 		MainPart.Play (); //Cascade bubbles
 		yield return new WaitForSeconds(1);
 		
