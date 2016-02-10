@@ -4,10 +4,13 @@ using System.Collections;
 public class Matching : MonoBehaviour {
 
 	GameObject Points;
+	Animator OctoAnimator;
 
 	// Use this for initialization
 	void Start () {
 		Points = GameObject.Find ("Scripts");
+		
+		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
 	}
 	
 	// Update is called once per frame
@@ -381,6 +384,7 @@ public class Matching : MonoBehaviour {
 	public void TestCashin(){
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			//cash in
+
 			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 			
 			Cashedin ();

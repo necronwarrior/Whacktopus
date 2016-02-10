@@ -41,14 +41,37 @@ public class States : MonoBehaviour {
 	public float JumpTime = 0;
 	public float StunTime = 0;
 	public float CashTime = 0;
+	
+	Animator OctoAnimator;
 
 	// Use this for initialization
 	void Start () {
-	
+		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+		if (currentOctopus == OctopusState.Jumping){
+			OctoAnimator.SetBool("Spawned", true);
+		}
+
+		if (currentOctopus == OctopusState.Stunned){
+			OctoAnimator.SetBool("One tap", true);
+		}
+
+		if (currentOctopus == OctopusState.Cashed){
+			OctoAnimator.SetBool("Two tap", true);
+		}
+
+		/*if (currentOctopus == OctopusState.Under){
+			OctoAnimator.SetBool("Spawned", false);
+			OctoAnimator.SetBool("One tap", false);
+			OctoAnimator.SetBool("Two tap", false);
+			OctoAnimator.SetBool("Time to Under", false);
+			OctoAnimator.SetBool("Time to Idle", false);
+
+		}*/
+
 	}
 }

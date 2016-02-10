@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Jumping : MonoBehaviour {
 
+	Animator OctoAnimator;
+
 	// Use this for initialization
 	void Start () {
-
+		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
 	}
 	
 	// Update is called once per frame
@@ -61,6 +63,7 @@ public class Jumping : MonoBehaviour {
 			if (this.gameObject.GetComponent<States> ().JumpTime >= 4)
 			{
 				//set back to being under and change color
+				OctoAnimator.SetBool("Time to Under", true);
 				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
 				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
 			}
@@ -76,6 +79,7 @@ public class Jumping : MonoBehaviour {
 			if (this.gameObject.GetComponent<States> ().StunTime >= 10)
 			{
 				//set back to being under and change color
+				OctoAnimator.SetBool("Time to Under", true);
 				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
 				this.GetComponent<States> ().currentType = Squaretype.Empty;
 				this.gameObject.GetComponent<Renderer>().material.color = Color.white;

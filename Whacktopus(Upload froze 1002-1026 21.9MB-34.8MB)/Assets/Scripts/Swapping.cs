@@ -17,6 +17,8 @@ public class Swapping : MonoBehaviour {
 	public bool MouseHeld;
 	public bool MouseHeldDrop;
 
+
+
 	// Use this for initialization
 	void Start () {
 		clicked = false;
@@ -29,6 +31,7 @@ public class Swapping : MonoBehaviour {
 		numclicks = 0;
 
 		click_reset = gameObject.transform.position;
+
 	} 
 	
 	// Update is called once per frame
