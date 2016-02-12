@@ -17,11 +17,11 @@ public class Jumping : MonoBehaviour {
 		//clear cashed
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Cashed) //currently stunned
 		{
-			//set current time jumping
+			//set current time cashing in
 			this.gameObject.GetComponent<States> ().CashTime += Time.deltaTime;
 			
-			//check if jumptime has ended
-			if (this.gameObject.GetComponent<States> ().CashTime >= 0)
+			//check if cashtime has ended
+			if (this.gameObject.GetComponent<States> ().CashTime >= 1)
 			{
 				//set back to being under and change color
 				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
@@ -36,6 +36,7 @@ public class Jumping : MonoBehaviour {
 			this.gameObject.GetComponent<States> ().JumpTime = 0;
 			this.gameObject.GetComponent<States> ().StunTime = 0;
 			this.gameObject.GetComponent<States> ().CashTime = 0;
+			this.gameObject.GetComponent<States> ().IdleTime = 0;
 
 			//get random number
 			float number = Random.Range(0,400);
@@ -59,21 +60,45 @@ public class Jumping : MonoBehaviour {
 			//set current time jumping
 			this.gameObject.GetComponent<States> ().JumpTime += Time.deltaTime;
 
+
+			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)(-1.5 + (1.5 * this.gameObject.GetComponent<States> ().JumpTime/1.4)),gameObject.transform.parent.position.z);
+
 			//check if jumptime has ended
-			if (this.gameObject.GetComponent<States> ().JumpTime >= 4)
+			if (this.gameObject.GetComponent<States> ().JumpTime >= 1.4)
+			{
+				this.GetComponent<States> ().currentOctopus = OctopusState.Idle;
+				gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)0.0f,gameObject.transform.parent.position.z);
+			}
+
+		}
+
+		if (this.GetComponent<States> ().currentOctopus == OctopusState.Idle) //currently idle
+		{
+			//set current time jumping
+			this.gameObject.GetComponent<States> ().IdleTime += Time.deltaTime;
+
+			//animate sinking
+			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.0)
+			{
+				gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)(0 - (1.5 * (this.gameObject.GetComponent<States> ().IdleTime - 2)/0.6)),gameObject.transform.parent.position.z);
+			}
+
+			//check if jumptime has ended 
+			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.6)
 			{
 				//set back to being under and change color
 				OctoAnimator.SetBool("Time to Under", true);
 				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
 				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
 			}
-
+			
 		}
 
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) //currently stunned
 		{
 			//set current time jumping
 			this.gameObject.GetComponent<States> ().StunTime += Time.deltaTime;
+			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)0.0f,gameObject.transform.parent.position.z);
 			
 			//check if jumptime has ended
 			if (this.gameObject.GetComponent<States> ().StunTime >= 10)

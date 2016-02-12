@@ -10,6 +10,8 @@ public class Swapping : MonoBehaviour {
 	public bool clicked;
 	public bool SetToClicked;
 
+	public Ray ray;
+
 	public int numclicks;
 	public float MouseTimer;
 	public float ClickTimer; 
@@ -30,7 +32,8 @@ public class Swapping : MonoBehaviour {
 		SetToClicked = false;
 		numclicks = 0;
 
-		click_reset = gameObject.transform.position;
+
+		click_reset = gameObject.transform.parent.position;
 
 	} 
 	
@@ -42,13 +45,13 @@ public class Swapping : MonoBehaviour {
 		MouseHeldDrop = false;
 
 		//test for misplaced cubes
-		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
+		/*GameObject[] objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
 		foreach (var obj in objects) {
 			if (obj.gameObject.GetComponent<Swapping> ().clicked == false && obj.gameObject.transform.position.y != 0){
 				//reset object position
 				obj.gameObject.transform.position = obj.gameObject.GetComponent<Swapping> ().click_reset;
 			}
-		}
+		}*/
 
 		//ray test for current object
 		Ray ray2 = Camera.main.ScreenPointToRay( Input.mousePosition );
@@ -98,24 +101,27 @@ public class Swapping : MonoBehaviour {
 				}
 				if (MouseHeldDrop == true && Input.GetMouseButtonUp (0)) {
 					RaycastHit hit;
-					Ray ray = new Ray (new Vector3 (gameObject.transform.position.x, (gameObject.transform.position.y - 1.0f), (gameObject.transform.position.z + 1.0f)), new Vector3 (0.0f, -2.0f, +0.5f));
+					// ray shoting our of octo-object
+					ray = new Ray (new Vector3 (gameObject.transform.parent.position.x, (gameObject.transform.parent.position.y - 1.0f), (gameObject.transform.parent.position.z + 1.5f)),
+					               new Vector3 (0.0f, -1.0f, 0.0f));
 
 					if (Physics.Raycast (ray, out hit)) {
+						Debug.DrawLine(ray.origin, hit.point, Color.black, 5.0f);
 						if (hit.collider != null) {
-							bool fool = (((click_reset.z - 1.5f == hit.collider.gameObject.transform.position.z)
-								|| (hit.collider.gameObject.transform.position.z == click_reset.z + 1.5f))
-								&& hit.collider.gameObject.transform.position.x == click_reset.x);
-							bool rule = (((click_reset.x - 1.5f == hit.collider.gameObject.transform.position.x)
-								|| (hit.collider.gameObject.transform.position.x == click_reset.x + 1.5f))
-								&& hit.collider.gameObject.transform.position.z == click_reset.z);
+							bool fool = (((click_reset.z - 1.5f == hit.collider.gameObject.transform.parent.position.z)
+							              || (hit.collider.gameObject.transform.parent.position.z == click_reset.z + 1.5f))
+							             && hit.collider.gameObject.transform.parent.position.x == click_reset.x);
+							bool rule = (((click_reset.x - 1.5f == hit.collider.gameObject.transform.parent.position.x)
+							              || (hit.collider.gameObject.transform.parent.position.x == click_reset.x + 1.5f))
+							             && hit.collider.gameObject.transform.parent.position.z == click_reset.z);
 
 							if (fool == true || rule == true) {
-								hit2.transform.gameObject.transform.position = new Vector3 (hit.collider.transform.position.x, hit.collider.transform.position.y, hit.collider.transform.position.z);
-								hit.collider.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+								hit2.transform.gameObject.transform.parent.position = new Vector3 (hit.collider.transform.parent.position.x, hit.collider.transform.parent.position.y, hit.collider.transform.parent.position.z);
+								hit.collider.transform.parent.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
 
 								//set new click resets
-								hit2.transform.gameObject.GetComponent<Swapping> ().click_reset = hit2.transform.gameObject.transform.position;
-								hit.collider.transform.gameObject.GetComponent<Swapping> ().click_reset = hit.collider.transform.position;
+								hit2.transform.gameObject.GetComponent<Swapping> ().click_reset = hit2.transform.gameObject.transform.parent.position;
+								hit.collider.gameObject.GetComponent<Swapping> ().click_reset = hit.collider.transform.parent.position;
 
 								//set checkstates
 								hit2.transform.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
@@ -126,7 +132,7 @@ public class Swapping : MonoBehaviour {
 						}
 					} else {
 
-						hit2.transform.gameObject.transform.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
+						hit2.transform.gameObject.transform.parent.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
 						hit2.transform.gameObject.GetComponent<States> ().currentOctopus = hit2.transform.gameObject.GetComponent<States> ().PrevState;
 					}
 				}
@@ -134,12 +140,12 @@ public class Swapping : MonoBehaviour {
 		}
 		if (!Input.GetMouseButton(0)) {
 			clicked = false;
+			gameObject.transform.parent.position = new Vector3 (click_reset.x, click_reset.y, click_reset.z);
 		}
-		if (clicked == false) {
-			foreach (var obj in objects) {
-				if (obj.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Picked && obj.gameObject.GetComponent<Swapping> ().clicked == false) {
-					obj.gameObject.GetComponent<States> ().currentOctopus = obj.gameObject.GetComponent<States> ().PrevState;
-				}
+		if(clicked == false) {
+				if (gameObject.GetComponent<States> ().currentOctopus == OctopusState.Picked && gameObject.GetComponent<Swapping> ().clicked == false) {
+					gameObject.GetComponent<States> ().currentOctopus = gameObject.GetComponent<States> ().PrevState;
+
 			}
 		}
 
@@ -168,13 +174,13 @@ public class Swapping : MonoBehaviour {
 		}
 
 		//set all other objects clicked to false
-		var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
+		/*var objects = GameObject.FindGameObjectsWithTag("Blue_Octopus");
 		foreach (var obj in objects) {
 			if (obj.gameObject.GetComponent<Swapping> ().SetToClicked == false){
 				obj.gameObject.transform.position = obj.gameObject.GetComponent<Swapping> ().click_reset;
 				obj.gameObject.GetComponent<Swapping> ().clicked = false;
 			}
-		}
+		}*/
 
 		SetToClicked = false;
 
@@ -190,10 +196,10 @@ public class Swapping : MonoBehaviour {
 
 		Vector3 mouseInp = Input.mousePosition;
 			
-		world_pos = Camera.main.ScreenToWorldPoint(new Vector3(mouseInp.x, mouseInp.y, (6.8f+(gameObject.transform.position.z/2.5f))));
-		gameObject.transform.position = (world_pos);
+		world_pos = Camera.main.ScreenToWorldPoint(new Vector3(mouseInp.x, mouseInp.y, (6.8f+(gameObject.transform.parent.position.z/2.5f))));
+		gameObject.transform.parent.position = (world_pos);
 			
-		new_y = (gameObject.transform.position.y * ((float)System.Math.Sin (0))+3.0f);
-		gameObject.transform.position = new Vector3(gameObject.transform.position.x , new_y, gameObject.transform.position.z);
+		new_y = (gameObject.transform.parent.position.y * ((float)System.Math.Sin (0))+3.0f);
+		gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x , new_y, gameObject.transform.parent.position.z);
 	}
 }

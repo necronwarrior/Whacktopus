@@ -5,6 +5,7 @@ using System.Collections;
 public enum OctopusState
 {
 	Under,
+	Idle,
 	Stunned,
 	Jumping,
 	Picked,
@@ -39,9 +40,9 @@ public class States : MonoBehaviour {
 
 
 	public float JumpTime = 0;
+	public float IdleTime = 0;
 	public float StunTime = 0;
 	public float CashTime = 0;
-	
 	Animator OctoAnimator;
 
 	// Use this for initialization
@@ -51,27 +52,38 @@ public class States : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-		if (currentOctopus == OctopusState.Jumping){
+
+		if (currentOctopus == OctopusState.Jumping && !OctoAnimator.GetBool("Spawned")){
+			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,0,gameObject.transform.parent.position.z);
 			OctoAnimator.SetBool("Spawned", true);
+
 		}
 
-		if (currentOctopus == OctopusState.Stunned){
+		if (currentOctopus == OctopusState.Idle && !OctoAnimator.GetBool("Spawned")) {
+			OctoAnimator.SetBool("Spawned", false);
+		}
+
+		if (currentOctopus == OctopusState.Stunned && !OctoAnimator.GetBool("One tap")){
+			OctoAnimator.SetBool("Spawned", false);
 			OctoAnimator.SetBool("One tap", true);
 		}
 
-		if (currentOctopus == OctopusState.Cashed){
+		if (currentOctopus == OctopusState.Cashed && !OctoAnimator.GetBool("Two tap")){
 			OctoAnimator.SetBool("Two tap", true);
+			OctoAnimator.SetBool("Rejuvination", true);
 		}
 
-		/*if (currentOctopus == OctopusState.Under){
-			OctoAnimator.SetBool("Spawned", false);
+		if (currentOctopus == OctopusState.Under){
+
+			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,-1.5f,gameObject.transform.parent.position.z);
+
 			OctoAnimator.SetBool("One tap", false);
 			OctoAnimator.SetBool("Two tap", false);
 			OctoAnimator.SetBool("Time to Under", false);
 			OctoAnimator.SetBool("Time to Idle", false);
+			OctoAnimator.SetBool("Rejuvination", false);
 
-		}*/
+		}
 
 	}
 }

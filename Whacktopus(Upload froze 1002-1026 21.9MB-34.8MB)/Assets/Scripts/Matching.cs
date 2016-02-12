@@ -393,7 +393,7 @@ public class Matching : MonoBehaviour {
 
 	//test to see if octopus can be stunned
 	public void TestStun(){
-		if (this.GetComponent<States> ().currentOctopus == OctopusState.Jumping && this.GetComponent<Swapping>().clicked ==true) {
+		if ((this.GetComponent<States> ().currentOctopus == OctopusState.Jumping || this.GetComponent<States> ().currentOctopus == OctopusState.Idle) && this.GetComponent<Swapping>().clicked ==true) {
 			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
 			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
