@@ -4,13 +4,10 @@ using System.Collections;
 public class Matching : MonoBehaviour {
 
 	GameObject Points;
-	Animator OctoAnimator;
 
 	// Use this for initialization
 	void Start () {
 		Points = GameObject.Find ("Scripts");
-		
-		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
 	}
 	
 	// Update is called once per frame
@@ -43,14 +40,14 @@ public class Matching : MonoBehaviour {
 				//check if Octopuses are the same type and stunned
 				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
 				    && (Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned)
-				    && (Squidmatch [i].gameObject.transform.position.z > this.gameObject.transform.position.z) 
-				    && (Squidmatch [i].gameObject.transform.position.x == this.gameObject.transform.position.x)) {
+				    && (Squidmatch [i].gameObject.transform.parent.position.z > this.gameObject.transform.parent.position.z) 
+				    && (Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
 					
 					//increase match counter
 					upmatch++;
 					
 					//set second collider to new object
-					Vector3 UpSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+					Vector3 UpSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 					SecondSquidmatch = Physics.OverlapSphere (UpSquid, 1f);
 					j=0;
 					
@@ -61,8 +58,8 @@ public class Matching : MonoBehaviour {
 						//check if Octopuses are the same type and stunned
 						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-						    && (SecondSquidmatch [j].gameObject.transform.position.z > Squidmatch [i].gameObject.transform.position.z 
-						    && SecondSquidmatch [j].gameObject.transform.position.x == Squidmatch [i].gameObject.transform.position.x)) {
+						    && (SecondSquidmatch [j].gameObject.transform.parent.position.z > Squidmatch [i].gameObject.transform.parent.position.z 
+						    && SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
 							
 							//increase match counter
 							upmatch++;
@@ -75,14 +72,14 @@ public class Matching : MonoBehaviour {
 				//check if Octopuses are the same type and stunned
 				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
 				    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-				    && (Squidmatch [i].gameObject.transform.position.z < this.gameObject.transform.position.z 
-				    && Squidmatch [i].gameObject.transform.position.x == this.gameObject.transform.position.x)) {
+				    && (Squidmatch [i].gameObject.transform.parent.position.z < this.gameObject.transform.parent.position.z 
+				    && Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
 					
 					//increase match counter
 					downmatch++;
 					
 					//set second collider to new object
-					Vector3 DownSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+					Vector3 DownSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 					SecondSquidmatch = Physics.OverlapSphere (DownSquid, 1f);
 					j=0;
 					
@@ -92,8 +89,8 @@ public class Matching : MonoBehaviour {
 						//check if Octopuses are the same type and stunned
 						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-						    && (SecondSquidmatch [j].gameObject.transform.position.z < Squidmatch [i].gameObject.transform.position.z 
-						    && SecondSquidmatch [j].gameObject.transform.position.x == Squidmatch [i].gameObject.transform.position.x)) {
+						    && (SecondSquidmatch [j].gameObject.transform.parent.position.z < Squidmatch [i].gameObject.transform.parent.position.z 
+						    && SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
 							
 							//increase match counter
 							downmatch++;
@@ -107,14 +104,14 @@ public class Matching : MonoBehaviour {
 				//check if Octopuses are the same type and stunned
 				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
 				    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-				    && (Squidmatch [i].gameObject.transform.position.x > this.gameObject.transform.position.x 
-				    && Squidmatch [i].gameObject.transform.position.z == this.gameObject.transform.position.z)) {
+				    && (Squidmatch [i].gameObject.transform.parent.position.x > this.gameObject.transform.parent.position.x 
+				    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
 					
 					//increase match counter
 					rightmatch++;
 					
 					//set second collider to new object
-					Vector3 RightSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+					Vector3 RightSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 					SecondSquidmatch = Physics.OverlapSphere (RightSquid, 1f);
 					j=0;
 					
@@ -125,8 +122,8 @@ public class Matching : MonoBehaviour {
 						//check if Octopuses are the same type and stunned
 						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-						    && (SecondSquidmatch [j].gameObject.transform.position.x > Squidmatch [i].gameObject.transform.position.x 
-						    && SecondSquidmatch [j].gameObject.transform.position.z == Squidmatch [i].gameObject.transform.position.z)) {
+						    && (SecondSquidmatch [j].gameObject.transform.parent.position.x > Squidmatch [i].gameObject.transform.parent.position.x 
+						    && SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
 							
 							//increase match counter
 							rightmatch++;
@@ -140,14 +137,14 @@ public class Matching : MonoBehaviour {
 				//check if Octopuses are the same type and stunned
 				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
 				    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-				    && (Squidmatch [i].gameObject.transform.position.x < this.gameObject.transform.position.x 
-				    && Squidmatch [i].gameObject.transform.position.z == this.gameObject.transform.position.z)) {
+				    && (Squidmatch [i].gameObject.transform.parent.position.x < this.gameObject.transform.parent.position.x 
+				    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
 					
 					//increase match counter
 					leftmatch++;
 					
 					//set second collider to new object
-					Vector3 LeftSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+					Vector3 LeftSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 					SecondSquidmatch = Physics.OverlapSphere (LeftSquid, 1f);
 					j=0;
 					
@@ -158,8 +155,8 @@ public class Matching : MonoBehaviour {
 						//check if Octopuses are the same type and stunned
 						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
-						    && (SecondSquidmatch [j].gameObject.transform.position.x < Squidmatch [i].gameObject.transform.position.x 
-						    && SecondSquidmatch [j].gameObject.transform.position.z == Squidmatch [i].gameObject.transform.position.z)) {
+						    && (SecondSquidmatch [j].gameObject.transform.parent.position.x < Squidmatch [i].gameObject.transform.parent.position.x 
+						    && SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
 							
 							//increase match counter
 							leftmatch++;
@@ -174,12 +171,13 @@ public class Matching : MonoBehaviour {
 			
 			
 			//check if enough matched
-			if (upmatch + downmatch >= 2){
+			if ((upmatch + downmatch) >= 2){
 				verticalmatch = true;
 				totalmatch += upmatch + downmatch;
 				
 			}
-			if (leftmatch + rightmatch >= 2){
+
+			if ((leftmatch + rightmatch) >= 2){
 				horizontalmatch = true;
 				totalmatch += leftmatch + rightmatch;
 			}
@@ -200,15 +198,15 @@ public class Matching : MonoBehaviour {
 						//checkup
 						if (upmatch > 0){
 							//get up octopus
-							if ((Squidmatch [i].gameObject.transform.position.z > this.gameObject.transform.position.z) 
-							    && (Squidmatch [i].gameObject.transform.position.x == this.gameObject.transform.position.x)) {
+							if ((Squidmatch [i].gameObject.transform.parent.position.z > this.gameObject.transform.parent.position.z) 
+							    && (Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
 								
 								//set to cashed in 
 								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 								if (upmatch == 2){
 									//set second collider to new object
-									Vector3 UpSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+									Vector3 UpSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 									SecondSquidmatch = Physics.OverlapSphere (UpSquid, 1f);
 									j=0;
 									
@@ -217,8 +215,8 @@ public class Matching : MonoBehaviour {
 										
 										//checkup
 										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.position.z > Squidmatch [i].gameObject.transform.position.z 
-										    && SecondSquidmatch [j].gameObject.transform.position.x == Squidmatch [i].gameObject.transform.position.x)) {
+										if ((SecondSquidmatch [j].gameObject.transform.parent.position.z > Squidmatch [i].gameObject.transform.parent.position.z 
+										    && SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
 											
 											//increase match counter
 											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
@@ -232,15 +230,15 @@ public class Matching : MonoBehaviour {
 						//checkdown
 						if (downmatch > 0){
 							//check if Octopuses are the same type and stunned
-							if ((Squidmatch [i].gameObject.transform.position.z < this.gameObject.transform.position.z 
-							    && Squidmatch [i].gameObject.transform.position.x == this.gameObject.transform.position.x)) {
+							if ((Squidmatch [i].gameObject.transform.parent.position.z < this.gameObject.transform.parent.position.z 
+							    && Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
 								
 								//increase match counter
 								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 								if (downmatch == 2){
 									//set second collider to new object
-									Vector3 DownSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+									Vector3 DownSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 									SecondSquidmatch = Physics.OverlapSphere (DownSquid, 1f);
 									j=0;
 									
@@ -248,8 +246,8 @@ public class Matching : MonoBehaviour {
 									while (j < SecondSquidmatch.Length) {
 										
 										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.position.z < Squidmatch [i].gameObject.transform.position.z) 
-										    && (SecondSquidmatch [j].gameObject.transform.position.x == Squidmatch [i].gameObject.transform.position.x)) {
+										if ((SecondSquidmatch [j].gameObject.transform.parent.position.z < Squidmatch [i].gameObject.transform.parent.position.z) 
+										    && (SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
 											
 											//increase match counter
 											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
@@ -267,15 +265,15 @@ public class Matching : MonoBehaviour {
 						//checkright
 						if (rightmatch > 0){
 							//check if Octopuses are the same type and stunned
-							if ((Squidmatch [i].gameObject.transform.position.x > this.gameObject.transform.position.x 
-							    && Squidmatch [i].gameObject.transform.position.z == this.gameObject.transform.position.z)) {
+							if ((Squidmatch [i].gameObject.transform.parent.position.x > this.gameObject.transform.parent.position.x 
+							    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
 								
 								//increase match counter
 								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 								if (rightmatch == 2){
 									//set second collider to new object
-									Vector3 RightSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+									Vector3 RightSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 									SecondSquidmatch = Physics.OverlapSphere (RightSquid, 1f);
 									j=0;
 									
@@ -284,8 +282,8 @@ public class Matching : MonoBehaviour {
 										
 										//checkright
 										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.position.x > Squidmatch [i].gameObject.transform.position.x) 
-										    && (SecondSquidmatch [j].gameObject.transform.position.z == Squidmatch [i].gameObject.transform.position.z)) {
+										if ((SecondSquidmatch [j].gameObject.transform.parent.position.x > Squidmatch [i].gameObject.transform.parent.position.x) 
+										    && (SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
 											
 											//increase match counter
 											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
@@ -300,15 +298,15 @@ public class Matching : MonoBehaviour {
 						//checkleft
 						if (leftmatch > 0){
 							//check if Octopuses are the same type and stunned
-							if ((Squidmatch [i].gameObject.transform.position.x < this.gameObject.transform.position.x 
-							    && Squidmatch [i].gameObject.transform.position.z == this.gameObject.transform.position.z)) {
+							if ((Squidmatch [i].gameObject.transform.parent.position.x < this.gameObject.transform.parent.position.x 
+							    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
 								
 								//increase match counter
 								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 
 								if (leftmatch == 2){
 									//set second collider to new object
-									Vector3 LeftSquid = new Vector3 (Squidmatch [i].gameObject.transform.position.x, Squidmatch [i].gameObject.transform.position.y, Squidmatch [i].gameObject.transform.position.z );
+									Vector3 LeftSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
 									SecondSquidmatch = Physics.OverlapSphere (LeftSquid, 1f);
 									j=0;
 									
@@ -317,8 +315,8 @@ public class Matching : MonoBehaviour {
 										
 										//checkup
 										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.position.x < Squidmatch [i].gameObject.transform.position.x 
-										    && SecondSquidmatch [j].gameObject.transform.position.z == Squidmatch [i].gameObject.transform.position.z)) {
+										if ((SecondSquidmatch [j].gameObject.transform.parent.position.x < Squidmatch [i].gameObject.transform.parent.position.x 
+										    && SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
 											
 											//increase match counter
 											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
@@ -396,7 +394,7 @@ public class Matching : MonoBehaviour {
 		if ((this.GetComponent<States> ().currentOctopus == OctopusState.Jumping || this.GetComponent<States> ().currentOctopus == OctopusState.Idle) && this.GetComponent<Swapping>().clicked ==true) {
 			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-			//this.gameObject.GetComponent<Renderer>().material.color = Color.red;
+			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
 			//set checkmatches flag
 			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 
