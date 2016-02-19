@@ -24,9 +24,7 @@ public class Jumping : MonoBehaviour {
 			if (this.gameObject.GetComponent<States> ().CashTime >= 1)
 			{
 				//set back to being under and change color
-				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
-				this.GetComponent<States> ().currentType = Squaretype.Empty;
-				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+				this.GetComponent<States> ().SetUnder();
 			}
 			
 		}
@@ -50,7 +48,7 @@ public class Jumping : MonoBehaviour {
 
 				//set to jumping and change color
 				this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Jumping;
-				this.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+				//this.gameObject.GetComponent<Renderer>().material.color = Color.blue;
 
 			}
 		}
@@ -87,9 +85,8 @@ public class Jumping : MonoBehaviour {
 			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.6)
 			{
 				//set back to being under and change color
-				OctoAnimator.SetBool("Time to Under", true);
-				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
-				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+
+				this.GetComponent<States> ().SetUnder();
 			}
 			
 		}
@@ -104,10 +101,7 @@ public class Jumping : MonoBehaviour {
 			if (this.gameObject.GetComponent<States> ().StunTime >= 10)
 			{
 				//set back to being under and change color
-				OctoAnimator.SetBool("Time to Under", true);
-				this.GetComponent<States> ().currentOctopus = OctopusState.Under;
-				this.GetComponent<States> ().currentType = Squaretype.Empty;
-				this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+				this.GetComponent<States> ().SetUnder();
 			}
 			
 		}

@@ -77,13 +77,26 @@ public class States : MonoBehaviour {
 
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,-1.5f,gameObject.transform.parent.position.z);
 
-			OctoAnimator.SetBool("One tap", false);
-			OctoAnimator.SetBool("Two tap", false);
-			OctoAnimator.SetBool("Time to Under", false);
-			OctoAnimator.SetBool("Time to Idle", false);
-			OctoAnimator.SetBool("Rejuvination", false);
-
+			ResetStatebools();
 		}
 
+	}
+
+	public void ResetStatebools(){
+		OctoAnimator.SetBool("Spawned", false);
+		OctoAnimator.SetBool("One tap", false);
+		OctoAnimator.SetBool("Two tap", false);
+		OctoAnimator.SetBool("Time to Under", false);
+		OctoAnimator.SetBool("Time to Idle", false);
+		OctoAnimator.SetBool("Rejuvination", false);
+	}
+
+	public void SetUnder(){
+
+		currentOctopus = OctopusState.Under;
+		currentType = Squaretype.Empty;
+		//this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+		ResetStatebools();
+	
 	}
 }
