@@ -36,7 +36,7 @@ public class InGameGlobals : MonoBehaviour {
 		} else {
 			timechange = (float)(GameTimer * 4.2);
 
-			Time_limit.rectTransform.anchoredPosition = new Vector3 (300.0f, (timechange - 128), 0.0f);
+			Time_limit.rectTransform.anchoredPosition = new Vector3 (360.0f, (timechange - 128), 0.0f);
 			Time_limit.transform.localScale = new Vector3 (0.5f, (GameTimer / 10), 0);
 			if (LevelPoints > 0) {
 				if (Level==1){
@@ -45,7 +45,7 @@ public class InGameGlobals : MonoBehaviour {
 					pointadditive = (float)(LevelPoints / nextlevel);
 				}
 
-				Coin_limit.rectTransform.anchoredPosition = new Vector3 (300.0f, (pointadditive - 128), 0.0f);
+				Coin_limit.rectTransform.anchoredPosition = new Vector3 (360.0f, (pointadditive - 128), 0.0f);
 				Coin_limit.transform.localScale = new Vector3 (0.5f, (pointadditive / 48), 0);
 		
 			}
@@ -64,7 +64,7 @@ public class InGameGlobals : MonoBehaviour {
 		ResetGameTimer ();
 
 		nextlevel *= 1.5f;
-		Coin_limit.rectTransform.anchoredPosition = new Vector3 (300.0f, (1 - 128), 0.0f);
+		Coin_limit.rectTransform.anchoredPosition = new Vector3 (360.0f, (1 - 128), 0.0f);
 		Coin_limit.transform.localScale = new Vector3 (0.5f, (1 / 40), 0);
 	}
 

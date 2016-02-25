@@ -39,6 +39,7 @@ public class States : MonoBehaviour {
 	public Squaretype currentType = Squaretype.Blue_Octopus;
 
 
+
 	public float JumpTime = 0;
 	public float IdleTime = 0;
 	public float StunTime = 0;
@@ -57,6 +58,7 @@ public class States : MonoBehaviour {
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,0,gameObject.transform.parent.position.z);
 			OctoAnimator.SetBool("Spawned", true);
 
+
 		}
 
 		if (currentOctopus == OctopusState.Idle && !OctoAnimator.GetBool("Spawned")) {
@@ -74,6 +76,7 @@ public class States : MonoBehaviour {
 		}
 
 		if (currentOctopus == OctopusState.Under){
+			this.transform.gameObject.GetComponent<AudioSource>().Stop();
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,-1.5f,gameObject.transform.parent.position.z);
 			ResetStatebools();
 		}

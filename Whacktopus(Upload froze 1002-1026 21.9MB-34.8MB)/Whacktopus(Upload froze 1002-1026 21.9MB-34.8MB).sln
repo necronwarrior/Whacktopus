@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{DA983B17-DF51-4BAC-1A3E-BB454B2D775F}") = "Whacktopus(Upload froze 1002-1026 21.9MB-34.8MB)", "Assembly-CSharp.csproj", "{EA6E2F4D-D56F-97AE-CD91-5429EE9F1C80}"
 EndProject
-Project("{DA983B17-DF51-4BAC-1A3E-BB454B2D775F}") = "Whacktopus(Upload froze 1002-1026 21.9MB-34.8MB)", "Assembly-UnityScript.unityproj", "{546FB961-6059-30F9-0276-140F04EB28F2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,15 +13,11 @@ Global
 		{EA6E2F4D-D56F-97AE-CD91-5429EE9F1C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA6E2F4D-D56F-97AE-CD91-5429EE9F1C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA6E2F4D-D56F-97AE-CD91-5429EE9F1C80}.Release|Any CPU.Build.0 = Release|Any CPU
-		{546FB961-6059-30F9-0276-140F04EB28F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{546FB961-6059-30F9-0276-140F04EB28F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{546FB961-6059-30F9-0276-140F04EB28F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{546FB961-6059-30F9-0276-140F04EB28F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																	GlobalSection(MonoDevelopProperties) = preSolution
+																																																								GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

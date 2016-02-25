@@ -5,9 +5,13 @@ public class Matching : MonoBehaviour {
 
 	GameObject Points;
 
+	public AudioClip Hit, Cash;
+
 	// Use this for initialization
 	void Start () {
 		Points = GameObject.Find ("Scripts");
+		Hit = Resources.Load ("Sounds/Squid-sounds/hit-2") as AudioClip;
+		Cash = Resources.Load ("Sounds/new folder/shillings") as AudioClip;
 	}
 	
 	// Update is called once per frame
@@ -383,6 +387,8 @@ public class Matching : MonoBehaviour {
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			//cash in
 
+			
+			this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Cash);
 			this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
 			
 			Cashedin ();
@@ -397,7 +403,8 @@ public class Matching : MonoBehaviour {
 			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
 			//set checkmatches flag
 			this.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
-
+			
+			this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Hit);
 			//set numclicks to 0
 			this.GetComponent<Swapping>().numclicks = 0;
 		}

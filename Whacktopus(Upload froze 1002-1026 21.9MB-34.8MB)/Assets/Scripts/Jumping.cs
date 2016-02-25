@@ -4,10 +4,15 @@ using System.Collections;
 public class Jumping : MonoBehaviour {
 
 	Animator OctoAnimator;
+	AudioClip Spawn;
+	bool OneSpawn;
 
 	// Use this for initialization
 	void Start () {
 		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
+		
+		Spawn = Resources.Load ("Sounds/Squid-sounds/Suction-Cup-2") as AudioClip;
+		OneSpawn = true;
 	}
 	
 	// Update is called once per frame
@@ -60,9 +65,20 @@ public class Jumping : MonoBehaviour {
 
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)(-1.5 + (1.5 * this.gameObject.GetComponent<States> ().JumpTime/1.4)),gameObject.transform.parent.position.z);
 
-			//check if jumptime has ended
-			if (this.gameObject.GetComponent<States> ().JumpTime >= 1.4)
+			if(this.gameObject.GetComponent<States> ().JumpTime >= 0.6 &&
+			   this.GetComponent<States> ().currentOctopus == OctopusState.Jumping &&
+			   OneSpawn == true)
 			{
+				this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Spawn);
+				OneSpawn =false;
+			}
+
+
+			//check if jumptime has ended
+			if (this.gameObject.GetComponent<States> ().JumpTime >= 1.4 &&
+			    this.GetComponent<States> ().currentOctopus == OctopusState.Jumping)
+			{
+				OneSpawn =true;
 				this.GetComponent<States> ().currentOctopus = OctopusState.Idle;
 				gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)0.0f,gameObject.transform.parent.position.z);
 			}
@@ -81,7 +97,8 @@ public class Jumping : MonoBehaviour {
 			}
 
 			//check if jumptime has ended 
-			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.6)
+			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.6 &&
+			    this.GetComponent<States> ().currentOctopus == OctopusState.Idle)
 			{
 				//set back to being under and change color
 				OctoAnimator.SetBool("Time to Under", true);
@@ -97,7 +114,8 @@ public class Jumping : MonoBehaviour {
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)0.0f,gameObject.transform.parent.position.z);
 			
 			//check if jumptime has ended
-			if (this.gameObject.GetComponent<States> ().StunTime >= 10)
+			if (this.gameObject.GetComponent<States> ().StunTime >= 10 &&
+			    this.GetComponent<States> ().currentOctopus == OctopusState.Stunned)
 			{
 				//set back to being under and change color
 				this.GetComponent<States> ().SetUnder();

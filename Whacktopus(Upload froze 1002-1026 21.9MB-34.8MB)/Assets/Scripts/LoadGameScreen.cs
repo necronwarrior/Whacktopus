@@ -4,13 +4,16 @@ using System.Collections;
 public class LoadGameScreen : MonoBehaviour {
 	public ParticleSystem MainPart;
 
-	// Use this for initialization
-	void Start () {
+	AudioClip Click;
 	
+	void Start()
+	{	
+		Click = Resources.Load ("Sounds/moving/Button-Click-2") as AudioClip;
 	}
 	
 	// Update is called once per frame
 	public void OnClick () {
+	this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Click);
 		StartCoroutine(Example());
 	}
 

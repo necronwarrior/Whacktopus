@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Swapping : MonoBehaviour {
 
-	public float testin_1, testin_2, testin_3;
+	//public float testin_1, testin_2, testin_3;
 	public float new_y;
 	public Vector3 world_pos, click_reset;
 
@@ -18,7 +18,6 @@ public class Swapping : MonoBehaviour {
 	public bool MouseClick;
 	public bool MouseHeld;
 	public bool MouseHeldDrop;
-
 
 
 	// Use this for initialization
