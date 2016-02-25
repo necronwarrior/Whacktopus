@@ -7,8 +7,11 @@ public class Matching : MonoBehaviour {
 
 	public AudioClip Hit, Cash;
 
+	ClickManager ClickManagerParent;
+
 	// Use this for initialization
 	void Start () {
+		ClickManagerParent = gameObject.transform.parent.transform.parent.GetComponent<ClickManager> ();
 		Points = GameObject.Find ("Scripts");
 		Hit = Resources.Load ("Sounds/Squid-sounds/hit-2") as AudioClip;
 		Cash = Resources.Load ("Sounds/new folder/shillings") as AudioClip;
@@ -16,6 +19,8 @@ public class Matching : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		ClickCheck ();
 
 		//check if a match check is needed for current object
 		if (this.GetComponent<States> ().currentCheck == CheckState.CheckMatch && this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
@@ -42,7 +47,7 @@ public class Matching : MonoBehaviour {
 				
 				//checkup
 				//check if Octopuses are the same type and stunned
-				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
+				if ((Squidmatch [i].gameObject.tag == this.gameObject.tag)
 				    && (Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned)
 				    && (Squidmatch [i].gameObject.transform.parent.position.z > this.gameObject.transform.parent.position.z) 
 				    && (Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
@@ -60,7 +65,7 @@ public class Matching : MonoBehaviour {
 						
 						//checkup
 						//check if Octopuses are the same type and stunned
-						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
+						if ((SecondSquidmatch [j].gameObject.tag == Squidmatch [i].gameObject.tag)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 						    && (SecondSquidmatch [j].gameObject.transform.parent.position.z > Squidmatch [i].gameObject.transform.parent.position.z 
 						    && SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
@@ -74,7 +79,7 @@ public class Matching : MonoBehaviour {
 
 				//checkdown
 				//check if Octopuses are the same type and stunned
-				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
+				if ((Squidmatch [i].gameObject.tag == this.gameObject.tag)
 				    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 				    && (Squidmatch [i].gameObject.transform.parent.position.z < this.gameObject.transform.parent.position.z 
 				    && Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
@@ -91,7 +96,7 @@ public class Matching : MonoBehaviour {
 					while (j < SecondSquidmatch.Length) {
 
 						//check if Octopuses are the same type and stunned
-						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
+						if ((SecondSquidmatch [j].gameObject.tag == Squidmatch [i].gameObject.tag)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 						    && (SecondSquidmatch [j].gameObject.transform.parent.position.z < Squidmatch [i].gameObject.transform.parent.position.z 
 						    && SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
@@ -106,7 +111,7 @@ public class Matching : MonoBehaviour {
 
 				//checkright
 				//check if Octopuses are the same type and stunned
-				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
+				if ((Squidmatch [i].gameObject.tag == this.gameObject.tag)
 				    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 				    && (Squidmatch [i].gameObject.transform.parent.position.x > this.gameObject.transform.parent.position.x 
 				    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
@@ -124,7 +129,7 @@ public class Matching : MonoBehaviour {
 						
 						//checkright
 						//check if Octopuses are the same type and stunned
-						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
+						if ((SecondSquidmatch [j].gameObject.tag == Squidmatch [i].gameObject.tag)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 						    && (SecondSquidmatch [j].gameObject.transform.parent.position.x > Squidmatch [i].gameObject.transform.parent.position.x 
 						    && SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
@@ -139,7 +144,7 @@ public class Matching : MonoBehaviour {
 
 				//checkleft
 				//check if Octopuses are the same type and stunned
-				if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
+				if ((Squidmatch [i].gameObject.tag == this.gameObject.tag)
 				    && Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 				    && (Squidmatch [i].gameObject.transform.parent.position.x < this.gameObject.transform.parent.position.x 
 				    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
@@ -157,7 +162,7 @@ public class Matching : MonoBehaviour {
 						
 						//checkleft
 						//check if Octopuses are the same type and stunned
-						if ((SecondSquidmatch [j].gameObject.GetComponent<States> ().currentType == Squidmatch [i].gameObject.GetComponent<States> ().currentType)
+						if ((SecondSquidmatch [j].gameObject.tag == Squidmatch [i].gameObject.tag)
 						    && SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned
 						    && (SecondSquidmatch [j].gameObject.transform.parent.position.x < Squidmatch [i].gameObject.transform.parent.position.x 
 						    && SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
@@ -374,15 +379,36 @@ public class Matching : MonoBehaviour {
 		}		
 	}
 
-	void OnMouseUp(){
-		
-	}
-	//removed clicks counter
-	void OnMouseDown(){
+	public void ClickCheck(){
+		if (ClickManagerParent.GetClickHold () == 2) 
+		{
+			if (ClickManagerParent.CurrentOctoObject == this.gameObject) 
+			{
+				if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+					//cash in
+					this.transform.gameObject.GetComponent<AudioSource> ().PlayOneShot (Cash);
+					this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
+				
+					Cashedin ();
+				}
 
+				if ((this.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Jumping 
+				     || this.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Idle)) {
+					//set Octopus to stunned
+					this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
+					this.gameObject.GetComponent<Renderer> ().material.color = Color.red;
+					//set checkmatches flag
+					this.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
+				
+					this.gameObject.GetComponent<AudioSource> ().PlayOneShot (Hit);
+					//set numclicks to 0
+					//this.GetComponent<Swapping>().numclicks = 0;
+				}
+			}
+		}
 	}
 
-	//test to see if octopus can be cashed in
+	/*//test to see if octopus can be cashed in
 	public void TestCashin(){
 		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
 			//cash in
@@ -397,7 +423,7 @@ public class Matching : MonoBehaviour {
 
 	//test to see if octopus can be stunned
 	public void TestStun(){
-		if ((this.GetComponent<States> ().currentOctopus == OctopusState.Jumping || this.GetComponent<States> ().currentOctopus == OctopusState.Idle) && this.GetComponent<Swapping>().clicked ==true) {
+		if ((this.GetComponent<States> ().currentOctopus == OctopusState.Jumping || this.GetComponent<States> ().currentOctopus == OctopusState.Idle)) {
 			//set Octopus to stunned
 			this.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
 			this.gameObject.GetComponent<Renderer>().material.color = Color.red;
@@ -406,9 +432,9 @@ public class Matching : MonoBehaviour {
 			
 			this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Hit);
 			//set numclicks to 0
-			this.GetComponent<Swapping>().numclicks = 0;
+			//this.GetComponent<Swapping>().numclicks = 0;
 		}
-	}
+	}*/
 
 
 
@@ -423,7 +449,7 @@ public class Matching : MonoBehaviour {
 		//
 		while (i < Squidmatch.Length && TwoCashIn == false) {
 			//check if squids are the same type and ready for cashing in
-			if ((Squidmatch [i].gameObject.GetComponent<States> ().currentType == this.gameObject.GetComponent<States> ().currentType)
+			if ((Squidmatch [i].gameObject.tag == this.gameObject.tag)
 			    && (Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned)
 			    && (this.GetComponent<States> ().currentOctopus == OctopusState.Cashed)) {
 

@@ -45,16 +45,37 @@ public class States : MonoBehaviour {
 	public float StunTime = 0;
 	public float CashTime = 0;
 	Animator OctoAnimator;
+	Material Red_Octo, Green_Octo, Orange_Octo;
 
 	// Use this for initialization
 	void Start () {
 		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
+		Red_Octo = Resources.Load ("Materials/octomaterials/Materials/Red_Octo") as Material;
+		Green_Octo = Resources.Load ("Materials/octomaterials/Materials/Green_Octo") as Material;
+		Orange_Octo = Resources.Load ("Materials/octomaterials/Materials/Orange_Octo") as Material;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
 		if (currentOctopus == OctopusState.Jumping && !OctoAnimator.GetBool("Spawned")){
+			int Rand_Mat;
+			Rand_Mat = Random.Range(1,4);
+			switch(Rand_Mat){
+			case 1: gameObject.GetComponent<Renderer>().material = Red_Octo;
+				gameObject.tag = "Red_octo";
+				break;
+			case 2: gameObject.GetComponent<Renderer>().material = Green_Octo;
+				gameObject.tag = "Green_octo";
+				break;
+			case 3: gameObject.GetComponent<Renderer>().material = Orange_Octo;
+				gameObject.tag = "Orange_octo";
+				break;
+			default: gameObject.GetComponent<Renderer>().material = null;
+				gameObject.tag = "default";
+				break;
+			};
+
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,0,gameObject.transform.parent.position.z);
 			OctoAnimator.SetBool("Spawned", true);
 
