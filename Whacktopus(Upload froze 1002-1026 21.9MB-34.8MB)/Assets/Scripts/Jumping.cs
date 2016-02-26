@@ -49,7 +49,7 @@ public class Jumping : MonoBehaviour {
 			if( number < Time.deltaTime/20000)
 			{
 				//set type
-				this.GetComponent<States> ().currentType = Squaretype.Blue_Octopus;
+				//this.GetComponent<States> ().currentType = Squaretype.Blue_Octopus;
 
 				//set to jumping and change color
 				this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Jumping;

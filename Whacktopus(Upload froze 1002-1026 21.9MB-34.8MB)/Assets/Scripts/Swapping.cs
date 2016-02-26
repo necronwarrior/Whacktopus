@@ -30,7 +30,8 @@ public class Swapping : MonoBehaviour {
 		//reset mouseclick
 
 	
-			if (ClickManagerParent.GetClickHold () ==1) {
+        if (ClickManagerParent.GetClickHold () ==1 
+            && ClickManagerParent.CurrentOctoObject.GetComponent<States> ().currentOctopus!= OctopusState.Under) {
 
 				if (ClickManagerParent.CollisionTest () == true) {
 					if (HasBeenHeld==false)
@@ -48,11 +49,11 @@ public class Swapping : MonoBehaviour {
 			if (ClickManagerParent.GetClickHold () == 3 &&
 				HasBeenHeld == true) {
 				//ClickManagerParent.Held = 3;
-				ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = false;
+				
 				// ray shoting our of octo-object
 				Ray RayFromHeldOcto = Camera.main.ScreenPointToRay( Input.mousePosition );
 				RaycastHit HitFromHeldOcto;
-
+                ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = false;
 				//Debug.DrawLine(ray.origin, ray.direction, Color.black, 5.0f);
 				if (Physics.Raycast (RayFromHeldOcto, out HitFromHeldOcto, 100.0f)) {
 					Debug.DrawLine (RayFromHeldOcto.origin, HitFromHeldOcto.point, Color.cyan, 5.0f);

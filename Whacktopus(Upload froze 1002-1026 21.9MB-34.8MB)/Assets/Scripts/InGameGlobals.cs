@@ -11,13 +11,17 @@ public class InGameGlobals : MonoBehaviour {
 
 	public int Level = 1;
 	
-	public double PointsNeeded = 2000;
+	 double PointsNeeded = 2000;
 	
-	public double TotalPoints = 0;
+	 double TotalPoints = 0;
 	
-	public double LevelPoints = 0;
+	 double LevelPoints = 0;
+
+    public Text TimeCount, ScoreCount;
 
 	public Image Time_limit, Coin_limit;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +33,9 @@ public class InGameGlobals : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
 		GameTimer -= Time.deltaTime;
 
 		if (GameTimer <= 0) {
@@ -51,6 +58,8 @@ public class InGameGlobals : MonoBehaviour {
 			}
 		}
 
+        TimeCount.text = GameTimer.ToString();
+        ScoreCount.text = TotalPoints.ToString();
 	}
 
 	void ResetGameTimer ()

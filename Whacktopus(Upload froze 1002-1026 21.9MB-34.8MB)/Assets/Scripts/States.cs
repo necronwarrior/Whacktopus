@@ -21,24 +21,12 @@ public enum CheckState
 }
 
 //The type of object in the grid space
-public enum Squaretype
-{
-	Empty,
-	Blue_Octopus
-}
-
 
 public class States : MonoBehaviour {
 	public OctopusState currentOctopus = OctopusState.Under;
 	//notes what the previous state was (for picking and moving)
 	public OctopusState PrevState = OctopusState.Under;
 	public CheckState currentCheck = CheckState.None;
-
-	//TESTING setting all blocks at srtart to blue octtopuses
-	//public Squaretype currentType = Squaretype.Empty;
-	public Squaretype currentType = Squaretype.Blue_Octopus;
-
-
 
 	public float JumpTime = 0;
 	public float IdleTime = 0;
@@ -115,7 +103,6 @@ public class States : MonoBehaviour {
 	public void SetUnder(){
 
 		currentOctopus = OctopusState.Under;
-		currentType = Squaretype.Empty;
 		this.gameObject.GetComponent<Renderer>().material.color = Color.white;
 		ResetStatebools();
 	

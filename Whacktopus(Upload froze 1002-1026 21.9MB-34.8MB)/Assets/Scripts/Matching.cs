@@ -8,22 +8,48 @@ public class Matching : MonoBehaviour {
 	public AudioClip Hit, Cash;
 
 	ClickManager ClickManagerParent;
+	States stater;
+    //4 rays at 90 degrees starting at forward
+    Ray[] FourDirections;
+    RaycastHit[] FourHits;
 
+    public struct Matches {
+        public int upmatch;
+        public int downmatch;
+        public int leftmatch;
+        public int rightmatch;
+
+        public Matches( int upmatch,
+                       int downmatch,
+                       int leftmatch,
+                       int rightmatch )
+        {
+            this.upmatch =0;
+            this.downmatch=0;
+            this.leftmatch=0;
+            this.rightmatch=0;
+        }
+    }
+
+    Matches MatchesThis;
+   
 	// Use this for initialization
 	void Start () {
 		ClickManagerParent = gameObject.transform.parent.transform.parent.GetComponent<ClickManager> ();
 		Points = GameObject.Find ("Scripts");
 		Hit = Resources.Load ("Sounds/Squid-sounds/hit-2") as AudioClip;
 		Cash = Resources.Load ("Sounds/new folder/shillings") as AudioClip;
+        FourDirections = new Ray[4];
+        FourHits = new RaycastHit[4];
 	}
 
-	void FourDirectionsCheck(int matches, Collider[] Squidmatch, Collider[] SecondSquidmatch , int i, int j )
+
+
+	/*void FourDirectionsCheck(Matches matches, Collider[] Squidmatch, Collider[] SecondSquidmatch , int i, int j )
     {
         //checkup
         //check if Octopuses are the same type and stunned
-        if ((Squidmatch[i].gameObject.tag == this.gameObject.tag)
-            && (Squidmatch[i].gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned)
-            && (Squidmatch[i].gameObject.transform.parent.position.z > this.gameObject.transform.parent.position.z)
+        if((Squidmatch[i].gameObject.transform.parent.position.z > this.gameObject.transform.parent.position.z)
             && (Squidmatch[i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x))
         {
 
@@ -34,47 +60,53 @@ public class Matching : MonoBehaviour {
             Vector3 UpSquid = new Vector3(Squidmatch[i].gameObject.transform.parent.position.x, Squidmatch[i].gameObject.transform.parent.position.y, Squidmatch[i].gameObject.transform.parent.position.z);
             SecondSquidmatch = Physics.OverlapSphere(UpSquid, 1f);
             j = 0;
-
-            //check up one more space
-            while (j < SecondSquidmatch.Length)
-            {
-
-                //checkup
-                //check if Octopuses are the same type and stunned
-                if ((SecondSquidmatch[j].gameObject.tag == Squidmatch[i].gameObject.tag)
-                    && SecondSquidmatch[j].gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned
-                    && (SecondSquidmatch[j].gameObject.transform.parent.position.z > Squidmatch[i].gameObject.transform.parent.position.z
-                    && SecondSquidmatch[j].gameObject.transform.parent.position.x == Squidmatch[i].gameObject.transform.parent.position.x))
-                {
-
-                    //increase match counter
-                    matches++;
-                }
-                j++;
-            }
         }
-    }
+    }*/
 
 	// Update is called once per frame
 	void Update () {
 
-		ClickCheck ();
+		ClickCheck();
 
 		//check if a match check is needed for current object
-		if (this.GetComponent<States> ().currentCheck == CheckState.CheckMatch && this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
+        if (this.GetComponent<States>().currentOctopus == OctopusState.Stunned 
+            && ClickManagerParent.GetClickHold() == 3)
+        {
 			//set matches for each direction to 0
-			int upmatch = 0;
-			int downmatch = 0;
-			int leftmatch = 0;
-			int rightmatch = 0;
+
 			int totalmatch = 1;
-			
+
+            FourDirections[0] = new Ray((gameObject.transform.parent.position),
+                                        (gameObject.transform.parent.forward));
+            FourDirections[1] = new Ray((gameObject.transform.parent.position),
+                                        (gameObject.transform.parent.right));
+            FourDirections[2] = new Ray((gameObject.transform.parent.position),
+                                        (-1*(gameObject.transform.parent.forward)));
+            FourDirections[3] = new Ray((gameObject.transform.parent.position),
+                                        (-1*(gameObject.transform.parent.right)));
+
+            Debug.DrawRay(FourDirections[0].origin, FourDirections[0].direction, Color.magenta);
+
+            for(int cross=0;cross<4;cross++)
+            {
+                if(Physics.Raycast(FourDirections[cross],out FourHits[cross], 0.6f)){
+                    if(FourHits[cross].collider.gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned)
+                    {
+
+                    }
+                
+                
+                }
+            }
 			bool verticalmatch = false;
 			bool horizontalmatch = false;
 			
 			Vector3 origin = new Vector3(gameObject.transform.parent.position.x, 
 			                             gameObject.transform.parent.position.y, 
 			                             gameObject.transform.parent.position.z);
+
+   
+
 			Collider[] Squidmatch = Physics.OverlapSphere (origin, 1f);
 			Collider[] SecondSquidmatch = Physics.OverlapSphere (origin, 1f);
 			
@@ -83,16 +115,18 @@ public class Matching : MonoBehaviour {
 			int i = 0;
 			int j = 0;
 			
+           // if ((Squidmatch[i].gameObject.tag == this.gameObject.tag)
+           // && (Squidmatch[i].gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned)
 			while (i < Squidmatch.Length) {
 
-				FourDirectionsCheck(upmatch, Squidmatch,SecondSquidmatch, i, j);
-				FourDirectionsCheck(downmatch, Squidmatch,SecondSquidmatch, i, j);
-				FourDirectionsCheck(leftmatch, Squidmatch,SecondSquidmatch, i, j);
-				FourDirectionsCheck(rightmatch, Squidmatch,SecondSquidmatch, i, j);
+				//FourDirectionsCheck(upmatch, Squidmatch,SecondSquidmatch, i, j);
+				//FourDirectionsCheck(downmatch, Squidmatch,SecondSquidmatch, i, j);
+				//FourDirectionsCheck(leftmatch, Squidmatch,SecondSquidmatch, i, j);
+				//FourDirectionsCheck(rightmatch, Squidmatch,SecondSquidmatch, i, j);
 
 				i++;
 			}
-			
+			/*
 			
 			//check if enough matched
 			if ((upmatch + downmatch) >= 2){
@@ -256,7 +290,7 @@ public class Matching : MonoBehaviour {
 				}
 				
 			}
-			
+			*/
 			//score points if match >=3
 			if (totalmatch >=3){
 				//attach to global
