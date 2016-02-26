@@ -42,7 +42,7 @@ public class Jumping : MonoBehaviour {
 			this.gameObject.GetComponent<States> ().IdleTime = 0;
 
 			//get random number
-			float number = Random.Range(0,400);
+			float number = Random.Range(0,300);
 
 
 			//check for jumping

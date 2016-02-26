@@ -1,23 +1,65 @@
 Base path: C:/Program Files/Unity/Editor/Data
-Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-25716
+Pipe name: \\.\pipe\UnityShaderCompiler-64bit-1-32856
 Cmd: getPlatforms
 Cmd: compileSnippet
-  api=4 type=0 insize=7080 outsize=5174 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=6331 outsize=3914 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=7080 outsize=2306 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=6331 outsize=2826 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=7137 outsize=5824 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=1319 outsize=13681 kw=SHADOWS_DEPTH GEOM_TYPE_BRANCH ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=7137 outsize=2956 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=1319 outsize=453 kw=SHADOWS_DEPTH GEOM_TYPE_BRANCH ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=6800 outsize=4053 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=634781 outsize=13299 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF GEOM_TYPE_BRANCH ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=6800 outsize=1566 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=634781 outsize=1713 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF GEOM_TYPE_BRANCH ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=2483 outsize=3484 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=408937 outsize=12681 kw=DIRECTIONAL GEOM_TYPE_BRANCH ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=2483 outsize=851 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=408937 outsize=1233 kw=DIRECTIONAL GEOM_TYPE_BRANCH ok=1
 Cmd: compileSnippet
-  api=4 type=0 insize=2483 outsize=3874 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=0 insize=1827 outsize=1290 kw=SOFTPARTICLES_OFF ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=2483 outsize=1168 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+  api=4 type=1 insize=1827 outsize=989 kw=SOFTPARTICLES_OFF ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=14306 outsize=3825 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=14306 outsize=1436 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=7914 outsize=2915 kw=DIRECTIONAL ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=7914 outsize=1290 kw=DIRECTIONAL ok=1
+Cmd: preprocess
+  insize=3572 outsize=1620 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2256 outsize=1379 kw=_TEX_OFF _COLOR_OFF ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=2256 outsize=729 kw=_TEX_OFF _COLOR_OFF ok=1
+Cmd: preprocess
+  insize=2391 outsize=1673 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1020 outsize=1054 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=1020 outsize=469 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2256 outsize=1379 kw=_TEX_OFF _COLOR_ON ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=2256 outsize=794 kw=_TEX_OFF _COLOR_ON ok=1
+Cmd: compileSnippet
+  api=1 type=0 insize=2256 outsize=196 kw=_TEX_OFF _COLOR_OFF ok=1
+Cmd: compileSnippet
+  api=8 type=0 insize=2256 outsize=2031 kw=_TEX_OFF _COLOR_ON ok=1
+Cmd: compileSnippet
+  api=1 type=0 insize=2256 outsize=240 kw=_COLOR_OFF _TEX_ON ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2256 outsize=1599 kw=_COLOR_OFF _TEX_ON ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=2256 outsize=1599 kw=_COLOR_ON _TEX_ON ok=1
+Cmd: compileSnippet
+  api=1 type=1 insize=2256 outsize=86 kw=_TEX_OFF _COLOR_OFF ok=1
+Cmd: compileSnippet
+  api=1 type=1 insize=2256 outsize=147 kw=_COLOR_OFF _TEX_ON ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=2256 outsize=1054 kw=_COLOR_ON _TEX_ON ok=1
+Cmd: preprocess
+  insize=3572 outsize=1620 ok=1

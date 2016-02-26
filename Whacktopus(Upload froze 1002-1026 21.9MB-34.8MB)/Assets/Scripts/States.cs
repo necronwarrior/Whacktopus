@@ -53,6 +53,7 @@ public class States : MonoBehaviour {
 		Red_Octo = Resources.Load ("Materials/octomaterials/Materials/Red_Octo") as Material;
 		Green_Octo = Resources.Load ("Materials/octomaterials/Materials/Green_Octo") as Material;
 		Orange_Octo = Resources.Load ("Materials/octomaterials/Materials/Orange_Octo") as Material;
+
 	}
 	
 	// Update is called once per frame
