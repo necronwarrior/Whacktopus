@@ -12,35 +12,60 @@ public class Matching : MonoBehaviour {
     //4 rays at 90 degrees starting at forward
     Ray[] FourDirections;
     RaycastHit[] FourHits;
+    Vector3 RealOrigin;
+    int totalmatch;
+    public int[] Match;
 
-    public struct Matches {
-        public int upmatch;
-        public int downmatch;
-        public int leftmatch;
-        public int rightmatch;
+    public bool verticalmatch, horizontalmatch, roundcheck;
 
-        public Matches( int upmatch,
-                       int downmatch,
-                       int leftmatch,
-                       int rightmatch )
-        {
-            this.upmatch =0;
-            this.downmatch=0;
-            this.leftmatch=0;
-            this.rightmatch=0;
-        }
-    }
-
-    Matches MatchesThis;
+    public GameObject[] debughits;
+    /*
+    0 = down
+    1 = left
+    2 = up
+    3 = right
+    */
    
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+        totalmatch = 0;
 		ClickManagerParent = gameObject.transform.parent.transform.parent.GetComponent<ClickManager> ();
 		Points = GameObject.Find ("Scripts");
 		Hit = Resources.Load ("Sounds/Squid-sounds/hit-2") as AudioClip;
 		Cash = Resources.Load ("Sounds/new folder/shillings") as AudioClip;
         FourDirections = new Ray[4];
         FourHits = new RaycastHit[4];
+        debughits = new GameObject[4];
+        RealOrigin = new Vector3(gameObject.transform.parent.position.x + 0.05f, 
+                                 gameObject.transform.parent.position.y + 0.04f, 
+                                 gameObject.transform.parent.position.z - 0.3f);
+        Match = new int[4];
+        roundcheck = false;
+
+        FourDirections[0] = new Ray((RealOrigin),
+                                    (2*gameObject.transform.parent.forward));
+        FourDirections[1] = new Ray((RealOrigin),
+                                    (2*gameObject.transform.parent.right));
+        FourDirections[2] = new Ray((RealOrigin),
+                                    (-2*(gameObject.transform.parent.forward)));
+        FourDirections[3] = new Ray((RealOrigin),
+                                    (-2*(gameObject.transform.parent.right)));
+        for (int i=0; i<4; i++)
+        {
+            Debug.DrawRay(FourDirections[i].origin,FourDirections[i].direction, Color.blue, 5.0f);
+        }
+
+        //gameObject.GetComponent<SphereCollider>().enabled = false;
+        for(int cross=0;cross<4;cross++)
+        {
+            if(Physics.Raycast(FourDirections[cross],out FourHits[cross]))
+            {
+                debughits [cross] = FourHits [cross].collider.gameObject.transform.parent.gameObject;
+            }
+        }
+        //gameObject.GetComponent<SphereCollider>().enabled = true;
+
+
 	}
 
 
@@ -68,265 +93,169 @@ public class Matching : MonoBehaviour {
 
 		ClickCheck();
 
+        if (horizontalmatch || verticalmatch)
+        {
+           MegaCashing();
+        }
+
+        if (verticalmatch)
+        {
+            totalmatch++;
+            if (FourHits[0].collider!=null)
+            {
+                FourHits[0].collider.gameObject.GetComponent<Matching>().Cashing();
+            }
+
+            if (FourHits[2].collider!=null)
+            {
+                FourHits[2].collider.gameObject.GetComponent<Matching>().Cashing();
+            }
+            verticalmatch = false;
+        }
+
+        if (horizontalmatch)
+        {
+            totalmatch++;
+            if (FourHits[1].collider!=null)
+            {
+                FourHits[1].collider.gameObject.GetComponent<Matching>().Cashing();
+            }
+
+            if (FourHits[3].collider!=null)
+            {
+                FourHits[3].collider.gameObject.GetComponent<Matching>().Cashing();
+            }
+            horizontalmatch = false;
+        }
+
+        if((Match[0]>=1
+            && Match[2]>=1)
+           ||Match[0] >=2
+           ||Match[2]>=2)
+        {
+            verticalmatch =true;
+        }
+        
+        if((Match[1]>=1
+            && Match[3]>=1)
+           ||Match[1] >=2
+           ||Match[3]>=2)
+        {
+            horizontalmatch =true;
+        }
+
 		//check if a match check is needed for current object
         if (this.GetComponent<States>().currentOctopus == OctopusState.Stunned 
-            && ClickManagerParent.GetClickHold() == 3)
+            && ClickManagerParent.GetClickHold() == 3
+            && roundcheck == false)
         {
 			//set matches for each direction to 0
 
 			int totalmatch = 1;
 
-            FourDirections[0] = new Ray((gameObject.transform.parent.position),
-                                        (gameObject.transform.parent.forward));
-            FourDirections[1] = new Ray((gameObject.transform.parent.position),
-                                        (gameObject.transform.parent.right));
-            FourDirections[2] = new Ray((gameObject.transform.parent.position),
-                                        (-1*(gameObject.transform.parent.forward)));
-            FourDirections[3] = new Ray((gameObject.transform.parent.position),
-                                        (-1*(gameObject.transform.parent.right)));
-
-            Debug.DrawRay(FourDirections[0].origin, FourDirections[0].direction, Color.magenta);
-
             for(int cross=0;cross<4;cross++)
             {
-                if(Physics.Raycast(FourDirections[cross],out FourHits[cross], 0.6f)){
-                    if(FourHits[cross].collider.gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned)
+                if(FourHits[cross].collider!=null)
+                {
+                    if(FourHits[cross].collider.gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned
+                       && (FourHits[cross].collider.gameObject.tag == gameObject.tag))
                     {
-
+                        Match[cross]++;
+                        FourHits[cross].collider.gameObject.GetComponent<Matching>().Match[cross]++;
                     }
-                
-                
                 }
             }
-			bool verticalmatch = false;
-			bool horizontalmatch = false;
-			
-			Vector3 origin = new Vector3(gameObject.transform.parent.position.x, 
-			                             gameObject.transform.parent.position.y, 
-			                             gameObject.transform.parent.position.z);
-
-   
-
-			Collider[] Squidmatch = Physics.OverlapSphere (origin, 1f);
-			Collider[] SecondSquidmatch = Physics.OverlapSphere (origin, 1f);
-			
-			
-			//find number matched in each direction
-			int i = 0;
-			int j = 0;
-			
-           // if ((Squidmatch[i].gameObject.tag == this.gameObject.tag)
-           // && (Squidmatch[i].gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned)
-			while (i < Squidmatch.Length) {
-
-				//FourDirectionsCheck(upmatch, Squidmatch,SecondSquidmatch, i, j);
-				//FourDirectionsCheck(downmatch, Squidmatch,SecondSquidmatch, i, j);
-				//FourDirectionsCheck(leftmatch, Squidmatch,SecondSquidmatch, i, j);
-				//FourDirectionsCheck(rightmatch, Squidmatch,SecondSquidmatch, i, j);
-
-				i++;
-			}
-			/*
-			
-			//check if enough matched
-			if ((upmatch + downmatch) >= 2){
-				verticalmatch = true;
-				totalmatch += upmatch + downmatch;
-				
-			}
-
-			if ((leftmatch + rightmatch) >= 2){
-				horizontalmatch = true;
-				totalmatch += leftmatch + rightmatch;
-			}
-			
-			// if a direction matched then set this object (the origin of the match) and the other matched tiles to cashed in
-			if (verticalmatch == true || horizontalmatch == true){
-				
-				this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-				
-				
-				
-				//clean up the matched squares
-				i = 0;
-				while (i < Squidmatch.Length) {
-
-					//check if there is a vertical match
-					if (verticalmatch == true){
-						//checkup
-						if (upmatch > 0){
-							//get up octopus
-							if ((Squidmatch [i].gameObject.transform.parent.position.z > this.gameObject.transform.parent.position.z) 
-							    && (Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
-								
-								//set to cashed in 
-								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-
-								if (upmatch == 2){
-									//set second collider to new object
-									Vector3 UpSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
-									SecondSquidmatch = Physics.OverlapSphere (UpSquid, 1f);
-									j=0;
-									
-									//check up one more space
-									while (j < SecondSquidmatch.Length) {
-										
-										//checkup
-										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.parent.position.z > Squidmatch [i].gameObject.transform.parent.position.z 
-										    && SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
-											
-											//increase match counter
-											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-										}
-										j++;
-									}
-								}
-							}
-						}
-						
-						//checkdown
-						if (downmatch > 0){
-							//check if Octopuses are the same type and stunned
-							if ((Squidmatch [i].gameObject.transform.parent.position.z < this.gameObject.transform.parent.position.z 
-							    && Squidmatch [i].gameObject.transform.parent.position.x == this.gameObject.transform.parent.position.x)) {
-								
-								//increase match counter
-								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-
-								if (downmatch == 2){
-									//set second collider to new object
-									Vector3 DownSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
-									SecondSquidmatch = Physics.OverlapSphere (DownSquid, 1f);
-									j=0;
-									
-									//check down one more space
-									while (j < SecondSquidmatch.Length) {
-										
-										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.parent.position.z < Squidmatch [i].gameObject.transform.parent.position.z) 
-										    && (SecondSquidmatch [j].gameObject.transform.parent.position.x == Squidmatch [i].gameObject.transform.parent.position.x)) {
-											
-											//increase match counter
-											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-										}
-										j++;
-									}
-								}
-							}
-						}
-					}
-
-
-					//check if there is a horizontal match
-					if(horizontalmatch == true){
-						//checkright
-						if (rightmatch > 0){
-							//check if Octopuses are the same type and stunned
-							if ((Squidmatch [i].gameObject.transform.parent.position.x > this.gameObject.transform.parent.position.x 
-							    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
-								
-								//increase match counter
-								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-
-								if (rightmatch == 2){
-									//set second collider to new object
-									Vector3 RightSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
-									SecondSquidmatch = Physics.OverlapSphere (RightSquid, 1f);
-									j=0;
-									
-									//check one more space
-									while (j < SecondSquidmatch.Length) {
-										
-										//checkright
-										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.parent.position.x > Squidmatch [i].gameObject.transform.parent.position.x) 
-										    && (SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
-											
-											//increase match counter
-											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-										}
-										j++;
-									}
-								}
-							}
-							
-						}
-						
-						//checkleft
-						if (leftmatch > 0){
-							//check if Octopuses are the same type and stunned
-							if ((Squidmatch [i].gameObject.transform.parent.position.x < this.gameObject.transform.parent.position.x 
-							    && Squidmatch [i].gameObject.transform.parent.position.z == this.gameObject.transform.parent.position.z)) {
-								
-								//increase match counter
-								Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-
-								if (leftmatch == 2){
-									//set second collider to new object
-									Vector3 LeftSquid = new Vector3 (Squidmatch [i].gameObject.transform.parent.position.x, Squidmatch [i].gameObject.transform.parent.position.y, Squidmatch [i].gameObject.transform.parent.position.z );
-									SecondSquidmatch = Physics.OverlapSphere (LeftSquid, 1f);
-									j=0;
-									
-									//check one more space
-									while (j < SecondSquidmatch.Length) {
-										
-										//checkup
-										//check if Octopuses are the same type and stunned
-										if ((SecondSquidmatch [j].gameObject.transform.parent.position.x < Squidmatch [i].gameObject.transform.parent.position.x 
-										    && SecondSquidmatch [j].gameObject.transform.parent.position.z == Squidmatch [i].gameObject.transform.parent.position.z)) {
-											
-											//increase match counter
-											SecondSquidmatch [j].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-										}
-										j++;
-									}
-								}
-							}
-						}
-					}
-						
-					i++;
-				}
-				
-			}
-			*/
-			//score points if match >=3
-			if (totalmatch >=3){
-				//attach to global
-				switch (totalmatch)
-				{
-				case 3:
-					Points.GetComponent<InGameGlobals>().AddPoints(600);
-					break;
-				case 4:
-					Points.GetComponent<InGameGlobals>().AddPoints(1200);
-					break;
-				case 5:
-					Points.GetComponent<InGameGlobals>().AddPoints(2000);
-					break;
-				case 6:
-					Points.GetComponent<InGameGlobals>().AddPoints(3000);
-					break;
-				case 7:
-					Points.GetComponent<InGameGlobals>().AddPoints(4200);
-					break;
-				case 8:
-					Points.GetComponent<InGameGlobals>().AddPoints(5600);
-					break;
-				case 9:
-					Points.GetComponent<InGameGlobals>().AddPoints(9001);
-					break;
-
-				}
-
-			}
-
-
+            roundcheck = true;
 			//set current check to none
 			this.GetComponent<States> ().currentCheck = CheckState.None;
 		}		
 	}
+
+    void MegaCashing()
+    {
+
+
+        if (horizontalmatch)
+        {
+            if (FourHits[1].collider!=null)
+            {
+                if(FourHits[1].collider.gameObject.GetComponent<Matching>().FourHits[1].collider!= null)
+                {
+                    totalmatch++;
+                }
+            }
+            
+            if (FourHits[3].collider!=null)
+            {
+                if(FourHits[3].collider.gameObject.GetComponent<Matching>().FourHits[3].collider!= null)
+                {
+                    totalmatch++;
+                }
+            }
+        }
+
+        if (verticalmatch)
+        {
+            if (FourHits[0].collider!=null)
+            {
+                if(FourHits[0].collider.gameObject.GetComponent<Matching>().FourHits[0].collider!= null)
+                {
+                    totalmatch++;
+                }
+            }
+            
+            if (FourHits[2].collider!=null)
+            {
+                if(FourHits[2].collider.gameObject.GetComponent<Matching>().FourHits[2].collider!= null)
+                {
+                    totalmatch++;
+                }
+            }
+        }
+
+        //score points if match >=3
+        if (totalmatch >=3){
+            //attach to global
+            switch (totalmatch)
+            {
+                case 3:
+                    Points.GetComponent<InGameGlobals>().AddPoints(600);
+                    break;
+                case 4:
+                    Points.GetComponent<InGameGlobals>().AddPoints(1200);
+                    break;
+                case 5:
+                    Points.GetComponent<InGameGlobals>().AddPoints(2000);
+                    break;
+                case 6:
+                    Points.GetComponent<InGameGlobals>().AddPoints(3000);
+                    break;
+                case 7:
+                    Points.GetComponent<InGameGlobals>().AddPoints(4200);
+                    break;
+                case 8:
+                    Points.GetComponent<InGameGlobals>().AddPoints(5600);
+                    break;
+                case 9:
+                    Points.GetComponent<InGameGlobals>().AddPoints(9001);
+                    break;   
+            }
+        }
+        Cashing();
+    }
+
+    public void Cashing(){
+        //cash in
+        roundcheck = false;
+        Match[0] = 0;
+        Match[1] = 0;
+        Match[2] = 0;
+        Match[3] = 0;
+        transform.gameObject.GetComponent<AudioSource> ().PlayOneShot (Cash);
+        GetComponent<States> ().currentOctopus = OctopusState.Cashed;
+        
+        Cashedin ();
+    }
 
 	public void ClickCheck(){
 		if (ClickManagerParent.GetClickHold () == 2) 
@@ -334,11 +263,14 @@ public class Matching : MonoBehaviour {
 			if (ClickManagerParent.CurrentOctoObject == this.gameObject) 
 			{
 				if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) {
-					//cash in
-					this.transform.gameObject.GetComponent<AudioSource> ().PlayOneShot (Cash);
-					this.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-				
-					Cashedin ();
+                    for (int last=0; last<4; last++)
+                    {
+                        if(Match[last]!=0)
+                        {
+                            FourHits [last].collider.gameObject.GetComponent<Matching>().Cashing();
+                        }
+                    }
+                    Cashing();
 				}
 
 				if ((this.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Jumping 

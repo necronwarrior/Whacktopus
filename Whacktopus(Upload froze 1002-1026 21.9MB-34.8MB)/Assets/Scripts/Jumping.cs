@@ -71,6 +71,7 @@ public class Jumping : MonoBehaviour {
 			{
 				this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Spawn);
 				OneSpawn =false;
+                gameObject.transform.GetComponent<SphereCollider>().enabled = true;
 			}
 
 
@@ -91,13 +92,14 @@ public class Jumping : MonoBehaviour {
 			this.gameObject.GetComponent<States> ().IdleTime += Time.deltaTime;
 
 			//animate sinking
-			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.0)
+			if (this.gameObject.GetComponent<States> ().IdleTime >= 8.0)
 			{
 				gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)(0 - (1.5 * (this.gameObject.GetComponent<States> ().IdleTime - 2)/0.6)),gameObject.transform.parent.position.z);
-			}
+                gameObject.transform.GetComponent<SphereCollider>().enabled = false;
+            }
 
 			//check if jumptime has ended 
-			if (this.gameObject.GetComponent<States> ().IdleTime >= 2.6 &&
+			if (this.gameObject.GetComponent<States> ().IdleTime >= 9.6 &&
 			    this.GetComponent<States> ().currentOctopus == OctopusState.Idle)
 			{
 				//set back to being under and change color
