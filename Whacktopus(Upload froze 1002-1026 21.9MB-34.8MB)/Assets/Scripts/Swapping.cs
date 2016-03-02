@@ -18,18 +18,12 @@ public class Swapping : MonoBehaviour {
 		ClickManagerParent = GetComponent<ClickManager> ();
 
 		HasBeenHeld = false;
-
 	} 
-
-
-
 
 	// Update is called once per frame
 	void Update () {
 
 		//reset mouseclick
-
-	
         if (ClickManagerParent.GetClickHold () ==1 
             && ClickManagerParent.CurrentOctoObject.GetComponent<States> ().currentOctopus!= OctopusState.Under) {
 
@@ -72,6 +66,25 @@ public class Swapping : MonoBehaviour {
 							ClickManagerParent.CurrentOctoObject.transform.parent.position = HitFromHeldOctoPos;
 							HitFromHeldOctoPos = click_reset;
 
+							//swap object neighbours
+						for(int swappee=0;swappee<4;swappee++){
+
+							if(ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee].collider.gameObject.transform.parent.gameObject 
+							   == HitFromHeldOcto.collider.gameObject.transform.parent.gameObject){
+								if (swappee==0||swappee==1)
+								{
+									ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee+2] = HitFromHeldOcto.collider.gameObject.transform.parent.gameObject.GetComponent<Matching> ().FourHits[swappee];
+									HitFromHeldOcto.collider.gameObject.GetComponent<Matching> ().FourHits[swappee+2] = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee];
+								}
+
+								if( swappee ==2|| swappee==3)
+								{
+									ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee-2] = HitFromHeldOcto.collider.gameObject.transform.parent.gameObject.GetComponent<Matching> ().FourHits[swappee];
+									HitFromHeldOcto.collider.gameObject.GetComponent<Matching> ().FourHits[swappee-2] = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee];
+								}
+
+							}
+						}
 							//set new click resets
 							ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Swapping> ().click_reset = ClickManagerParent.CurrentOctoObject.transform.gameObject.transform.parent.position;
 							HitFromHeldOcto.collider.gameObject.GetComponent<Swapping> ().click_reset = HitFromHeldOctoPos;

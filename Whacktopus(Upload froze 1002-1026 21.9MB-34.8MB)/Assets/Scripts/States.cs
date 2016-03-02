@@ -102,8 +102,12 @@ public class States : MonoBehaviour {
 
 	public void SetUnder(){
 
+
 		currentOctopus = OctopusState.Under;
 		this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+		for (int cross=0; cross<4; cross++) {
+			this.gameObject.GetComponent<Matching>().Match[cross] = 0;
+		}
 		ResetStatebools();
 	
 	}

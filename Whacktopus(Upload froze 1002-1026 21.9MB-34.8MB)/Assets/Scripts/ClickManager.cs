@@ -81,6 +81,7 @@ public class ClickManager : MonoBehaviour {
 				//}
 			}
 		}
+        CurrentOctoObject = null;
 		return false;
 	}
 }

@@ -11,7 +11,7 @@ public class Matching : MonoBehaviour {
 	States stater;
     //4 rays at 90 degrees starting at forward
     Ray[] FourDirections;
-    RaycastHit[] FourHits;
+    public RaycastHit[] FourHits;
     Vector3 RealOrigin;
     int totalmatch;
     public int[] Match;
@@ -129,17 +129,13 @@ public class Matching : MonoBehaviour {
         }
 
         if((Match[0]>=1
-            && Match[2]>=1)
-           ||Match[0] >=2
-           ||Match[2]>=2)
+            && Match[2]>=1))
         {
             verticalmatch =true;
         }
         
         if((Match[1]>=1
-            && Match[3]>=1)
-           ||Match[1] >=2
-           ||Match[3]>=2)
+            && Match[3]>=1))
         {
             horizontalmatch =true;
         }
@@ -147,7 +143,8 @@ public class Matching : MonoBehaviour {
 		//check if a match check is needed for current object
         if (this.GetComponent<States>().currentOctopus == OctopusState.Stunned 
             && ClickManagerParent.GetClickHold() == 3
-            && roundcheck == false)
+		    //&& roundcheck == false
+         )
         {
 			//set matches for each direction to 0
 
@@ -161,7 +158,15 @@ public class Matching : MonoBehaviour {
                        && (FourHits[cross].collider.gameObject.tag == gameObject.tag))
                     {
                         Match[cross]++;
-                        FourHits[cross].collider.gameObject.GetComponent<Matching>().Match[cross]++;
+						if(cross ==0 || cross==1)
+						{
+                        FourHits[cross].collider.gameObject.GetComponent<Matching>().Match[cross+2]++;
+						}
+
+						if(cross ==2 || cross==3)
+						{
+							FourHits[cross].collider.gameObject.GetComponent<Matching>().Match[cross-2]++;
+						}
                     }
                 }
             }
