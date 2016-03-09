@@ -9,6 +9,9 @@ public class Swapping : MonoBehaviour {
 	public Vector3 test1;
 	bool MouseHeld, HasBeenHeld;
 
+    GameObject Passover;
+    bool Oneswap = true;
+
 	float new_y;
 
 	private ClickManager ClickManagerParent;
@@ -24,92 +27,147 @@ public class Swapping : MonoBehaviour {
 	void Update () {
 
 		//reset mouseclick
-        if (ClickManagerParent.GetClickHold () ==1 
-            && ClickManagerParent.CurrentOctoObject.GetComponent<States> ().currentOctopus!= OctopusState.Under) {
+        if (ClickManagerParent.CurrentOctoObject != null)
+        {
+            if (ClickManagerParent.GetClickHold() == 1 
+                && ClickManagerParent.CurrentOctoObject.GetComponent<States>().currentOctopus != OctopusState.Under)
+            {
 
-				if (ClickManagerParent.CollisionTest () == true) {
-					if (HasBeenHeld==false)
-					{
-						click_reset = ClickManagerParent.CurrentOctoObject.transform.parent.position;
-						HasBeenHeld = true;
-					}
-					FollowDrag ();
+                if (ClickManagerParent.CollisionTest() == true)
+                {
+                    if (HasBeenHeld == false)
+                    {
+                        click_reset = ClickManagerParent.CurrentOctoObject.transform.parent.position;
+                        HasBeenHeld = true;
+                    }
+                    FollowDrag();
 
 
-				}
+                }
 
-			}
+            }
 
-			if (ClickManagerParent.GetClickHold () == 3 &&
-				HasBeenHeld == true) {
-				//ClickManagerParent.Held = 3;
+            if (ClickManagerParent.GetClickHold() == 3 &&
+                HasBeenHeld == true)
+            {
+                //ClickManagerParent.Held = 3;
 				
-				// ray shoting our of octo-object
-				Ray RayFromHeldOcto = Camera.main.ScreenPointToRay( Input.mousePosition );
-				RaycastHit HitFromHeldOcto;
+                // ray shoting our of octo-object
+                Ray RayFromHeldOcto = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit HitFromHeldOcto;
                 ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = false;
-				//Debug.DrawLine(ray.origin, ray.direction, Color.black, 5.0f);
-				if (Physics.Raycast (RayFromHeldOcto, out HitFromHeldOcto, 100.0f)) {
-					Debug.DrawLine (RayFromHeldOcto.origin, HitFromHeldOcto.point, Color.cyan, 5.0f);
-					Vector3 HitFromHeldOctoPos = HitFromHeldOcto.collider.gameObject.transform.parent.position;
+                //Debug.DrawLine(ray.origin, ray.direction, Color.black, 5.0f);
+                if (Physics.Raycast(RayFromHeldOcto, out HitFromHeldOcto, 100.0f))
+                {
+                    Debug.DrawLine(RayFromHeldOcto.origin, HitFromHeldOcto.point, Color.cyan, 5.0f);
+                    Vector3 HitFromHeldOctoPos = HitFromHeldOcto.collider.gameObject.transform.parent.position;
 
-					ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = true;
-					if (HitFromHeldOcto.collider != null) {
-						bool fool = (((click_reset.z - 1.5f == HitFromHeldOctoPos.z)
-							|| (HitFromHeldOctoPos.z == click_reset.z + 1.5f))
-							&& HitFromHeldOctoPos.x == click_reset.x);
-						bool rule = (((click_reset.x - 1.5f == HitFromHeldOctoPos.x)
-							|| (HitFromHeldOctoPos.x == click_reset.x + 1.5f))
-							&& HitFromHeldOctoPos.z == click_reset.z);
+                    ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = true;
+                    if (HitFromHeldOcto.collider != null)
+                    {
 
-						if (fool == true || rule == true) {
-							ClickManagerParent.CurrentOctoObject.transform.parent.position = HitFromHeldOctoPos;
-							HitFromHeldOctoPos = click_reset;
+                        int roundz, roundx, roundclickz, roundclickx;
+                        roundx = (int)Mathf.Round(HitFromHeldOctoPos.x * 100.0f) ;
+                        roundz = (int)Mathf.Round(HitFromHeldOctoPos.z * 100.0f) ;
 
-							//swap object neighbours
-						for(int swappee=0;swappee<4;swappee++){
+                        roundclickz = (int)Mathf.Round(click_reset.z * 100.0f);
+                        roundclickx = (int)Mathf.Round(click_reset.x * 100.0f) ;
 
-							if(ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee].collider.gameObject.transform.parent.gameObject 
-							   == HitFromHeldOcto.collider.gameObject.transform.parent.gameObject){
-								if (swappee==0||swappee==1)
-								{
-									ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee+2] = HitFromHeldOcto.collider.gameObject.transform.parent.gameObject.GetComponent<Matching> ().FourHits[swappee];
-									HitFromHeldOcto.collider.gameObject.GetComponent<Matching> ().FourHits[swappee+2] = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee];
-								}
+                        bool fool = ((((roundclickz - 150) == roundz)
+                            || (roundz == (roundclickz + 150)))
+                            && roundx == roundclickx);
+                        bool rule = ((((roundclickx - 150) == roundx)
+                            || (roundx == (roundclickx + 150)))
+                            && roundz == roundclickz);
 
-								if( swappee ==2|| swappee==3)
-								{
-									ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee-2] = HitFromHeldOcto.collider.gameObject.transform.parent.gameObject.GetComponent<Matching> ().FourHits[swappee];
-									HitFromHeldOcto.collider.gameObject.GetComponent<Matching> ().FourHits[swappee-2] = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching> ().FourHits[swappee];
-								}
+                        if (fool == true || rule == true)
+                        {
+                            ClickManagerParent.CurrentOctoObject.transform.parent.position = HitFromHeldOctoPos;
+                            HitFromHeldOctoPos = click_reset;
 
-							}
-						}
-							//set new click resets
-							ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Swapping> ().click_reset = ClickManagerParent.CurrentOctoObject.transform.gameObject.transform.parent.position;
-							HitFromHeldOcto.collider.gameObject.GetComponent<Swapping> ().click_reset = HitFromHeldOctoPos;
+                            //swap object neighbours
 
-							//set checkstates
-							ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
-							HitFromHeldOcto.collider.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 
-							ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<States> ().currentOctopus = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<States> ().PrevState;
-							HitFromHeldOcto.collider.gameObject.transform.parent.position = HitFromHeldOctoPos;
-						}else{
+                            
+                            for (int swappee=0; swappee<4; swappee++)
+                            {
+                                
+                                
+                                if (swappee == 0 || swappee == 1)
+                                {
+                                    if(ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee] == null)
+                                    {
+                                     //   HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee+2] = null;
+                                    }else{
+                                        if(HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee] == null)
+                                        {
+                                          //  ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee+2] = null;
+                                        }else{
 
-						ClickManagerParent.CurrentOctoObject.transform.parent.position = click_reset;
-						ClickManagerParent.CurrentOctoObject.GetComponent<States> ().currentOctopus = ClickManagerParent.CurrentOctoObject.GetComponent<States> ().PrevState;
+                                            ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee+2] =  HitFromHeldOcto.collider.gameObject;
+                                    
+                                            HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee+2] = ClickManagerParent.CurrentOctoObject.transform.gameObject;
+                                   
+                                        }
+                                    }
+                                }
+                                
+                                if (swappee == 2 || swappee == 3)
+                                {
+                                        if(ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee] == null)
+                                        {
+                                       //     HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee-2] = null;
+                                        }else{
+                                            if(HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee] == null)
+                                            {
+                                              //  ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee-2] = null;
+                                            }else{
 
-						}
-					}
-				} else {
-					ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = true;
-					ClickManagerParent.CurrentOctoObject.transform.parent.position = click_reset;
-					ClickManagerParent.CurrentOctoObject.GetComponent<States> ().currentOctopus = ClickManagerParent.CurrentOctoObject.GetComponent<States> ().PrevState;
-				}
-				ClickManagerParent.CurrentOctoObject.transform.parent.transform.localScale -= new Vector3 (0.5f, 0.5f, 0.5f);
-				HasBeenHeld = false;
-			}
+                                    
+                                            ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee-2] =  HitFromHeldOcto.collider.gameObject;
+                                    
+                                            HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee].gameObject.GetComponent<Matching>().ObjectsHits[swappee-2] = ClickManagerParent.CurrentOctoObject.transform.gameObject;
+                                
+                                            }
+                                        }
+                                }
+                                
+                                Passover = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee];
+                                
+                                ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee] = HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee];
+                                HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee] = Passover;
+                                Oneswap=true;
+                            }
+
+
+                            //set new click resets
+                            ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Swapping>().click_reset = ClickManagerParent.CurrentOctoObject.transform.gameObject.transform.parent.position;
+                            HitFromHeldOcto.collider.gameObject.GetComponent<Swapping>().click_reset = HitFromHeldOctoPos;
+
+                            //set checkstates
+                            ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<States>().currentCheck = CheckState.CheckMatch;
+                            HitFromHeldOcto.collider.gameObject.GetComponent<States>().currentCheck = CheckState.CheckMatch;
+
+                            ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<States>().currentOctopus = ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<States>().PrevState;
+                            HitFromHeldOcto.collider.gameObject.transform.parent.position = HitFromHeldOctoPos;
+                        } else
+                        {
+
+                            ClickManagerParent.CurrentOctoObject.transform.parent.position = click_reset;
+                            ClickManagerParent.CurrentOctoObject.GetComponent<States>().currentOctopus = ClickManagerParent.CurrentOctoObject.GetComponent<States>().PrevState;
+
+                        }
+                    }
+                } else
+                {
+                    ClickManagerParent.CurrentOctoObject.GetComponent<SphereCollider>().enabled = true;
+                    ClickManagerParent.CurrentOctoObject.transform.parent.position = click_reset;
+                    ClickManagerParent.CurrentOctoObject.GetComponent<States>().currentOctopus = ClickManagerParent.CurrentOctoObject.GetComponent<States>().PrevState;
+                }
+                ClickManagerParent.CurrentOctoObject.transform.parent.transform.localScale -= new Vector3(0.5f, 0.5f, 0.5f);
+                HasBeenHeld = false;
+            }
+        }
 
 	}
 

@@ -11,14 +11,14 @@ public class Matching : MonoBehaviour {
 	States stater;
     //4 rays at 90 degrees starting at forward
     Ray[] FourDirections;
-    public RaycastHit[] FourHits;
+    RaycastHit[] FourHits;
     Vector3 RealOrigin;
     int totalmatch;
     public int[] Match;
 
     public bool verticalmatch, horizontalmatch, roundcheck;
 
-    public GameObject[] debughits;
+    public GameObject[] ObjectsHits;
     /*
     0 = down
     1 = left
@@ -35,7 +35,7 @@ public class Matching : MonoBehaviour {
 		Cash = Resources.Load ("Sounds/new folder/shillings") as AudioClip;
         FourDirections = new Ray[4];
         FourHits = new RaycastHit[4];
-        debughits = new GameObject[4];
+        ObjectsHits = new GameObject[4];
         RealOrigin = new Vector3(gameObject.transform.parent.position.x + 0.05f, 
                                  gameObject.transform.parent.position.y + 0.04f, 
                                  gameObject.transform.parent.position.z - 0.3f);
@@ -58,9 +58,13 @@ public class Matching : MonoBehaviour {
         //gameObject.GetComponent<SphereCollider>().enabled = false;
         for(int cross=0;cross<4;cross++)
         {
-            if(Physics.Raycast(FourDirections[cross],out FourHits[cross]))
+            if(Physics.Raycast(FourDirections[cross],out FourHits[cross], 2.0F))
             {
-                debughits [cross] = FourHits [cross].collider.gameObject.transform.parent.gameObject;
+                if( FourHits [cross].collider.gameObject!=null)
+                {
+                    
+                    ObjectsHits [cross] = FourHits [cross].collider.gameObject;
+                }
             }
         }
         //gameObject.GetComponent<SphereCollider>().enabled = true;
@@ -101,14 +105,14 @@ public class Matching : MonoBehaviour {
         if (verticalmatch)
         {
             totalmatch++;
-            if (FourHits[0].collider!=null)
+            if (ObjectsHits[0]!=null)
             {
-                FourHits[0].collider.gameObject.GetComponent<Matching>().Cashing();
+               ObjectsHits[0].GetComponent<Matching>().Cashing();
             }
 
-            if (FourHits[2].collider!=null)
+            if (ObjectsHits[2]!=null)
             {
-                FourHits[2].collider.gameObject.GetComponent<Matching>().Cashing();
+                ObjectsHits[2].GetComponent<Matching>().Cashing();
             }
             verticalmatch = false;
         }
@@ -116,14 +120,14 @@ public class Matching : MonoBehaviour {
         if (horizontalmatch)
         {
             totalmatch++;
-            if (FourHits[1].collider!=null)
+            if (ObjectsHits[1]!=null)
             {
-                FourHits[1].collider.gameObject.GetComponent<Matching>().Cashing();
+                ObjectsHits[1].GetComponent<Matching>().Cashing();
             }
 
-            if (FourHits[3].collider!=null)
+            if (ObjectsHits[3]!=null)
             {
-                FourHits[3].collider.gameObject.GetComponent<Matching>().Cashing();
+                ObjectsHits[3].GetComponent<Matching>().Cashing();
             }
             horizontalmatch = false;
         }
@@ -152,20 +156,20 @@ public class Matching : MonoBehaviour {
 
             for(int cross=0;cross<4;cross++)
             {
-                if(FourHits[cross].collider!=null)
+                if(ObjectsHits[cross]!=null)
                 {
-                    if(FourHits[cross].collider.gameObject.GetComponent<States>().currentOctopus == OctopusState.Stunned
-                       && (FourHits[cross].collider.gameObject.tag == gameObject.tag))
+                    if(ObjectsHits[cross].GetComponent<States>().currentOctopus == OctopusState.Stunned
+                       && (ObjectsHits[cross].tag == gameObject.tag))
                     {
                         Match[cross]++;
 						if(cross ==0 || cross==1)
 						{
-                        FourHits[cross].collider.gameObject.GetComponent<Matching>().Match[cross+2]++;
+                            ObjectsHits[cross].GetComponent<Matching>().Match[cross+2]++;
 						}
 
 						if(cross ==2 || cross==3)
 						{
-							FourHits[cross].collider.gameObject.GetComponent<Matching>().Match[cross-2]++;
+                            ObjectsHits[cross].GetComponent<Matching>().Match[cross-2]++;
 						}
                     }
                 }
@@ -182,17 +186,17 @@ public class Matching : MonoBehaviour {
 
         if (horizontalmatch)
         {
-            if (FourHits[1].collider!=null)
+            if (ObjectsHits[1]!=null)
             {
-                if(FourHits[1].collider.gameObject.GetComponent<Matching>().FourHits[1].collider!= null)
+                if(ObjectsHits[1].GetComponent<Matching>().ObjectsHits[1]!= null)
                 {
                     totalmatch++;
                 }
             }
             
-            if (FourHits[3].collider!=null)
+            if (ObjectsHits[3]!=null)
             {
-                if(FourHits[3].collider.gameObject.GetComponent<Matching>().FourHits[3].collider!= null)
+                if(ObjectsHits[3].GetComponent<Matching>().ObjectsHits[3]!= null)
                 {
                     totalmatch++;
                 }
@@ -201,17 +205,17 @@ public class Matching : MonoBehaviour {
 
         if (verticalmatch)
         {
-            if (FourHits[0].collider!=null)
+            if (ObjectsHits[0]!=null)
             {
-                if(FourHits[0].collider.gameObject.GetComponent<Matching>().FourHits[0].collider!= null)
+                if(ObjectsHits[0].GetComponent<Matching>().ObjectsHits[0]!= null)
                 {
                     totalmatch++;
                 }
             }
             
-            if (FourHits[2].collider!=null)
+            if (ObjectsHits[2]!=null)
             {
-                if(FourHits[2].collider.gameObject.GetComponent<Matching>().FourHits[2].collider!= null)
+                if(ObjectsHits[2].GetComponent<Matching>().ObjectsHits[2]!= null)
                 {
                     totalmatch++;
                 }
@@ -272,7 +276,7 @@ public class Matching : MonoBehaviour {
                     {
                         if(Match[last]!=0)
                         {
-                            FourHits [last].collider.gameObject.GetComponent<Matching>().Cashing();
+                            ObjectsHits[last].GetComponent<Matching>().Cashing();
                         }
                     }
                     Cashing();

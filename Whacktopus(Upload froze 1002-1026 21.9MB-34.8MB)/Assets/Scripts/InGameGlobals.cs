@@ -25,7 +25,7 @@ public class InGameGlobals : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		BASE_TIMER = 2000.0f;
+		BASE_TIMER = 30.0f;
 		GameTimer = BASE_TIMER;
 		pointadditive = 0.0f;
 		nextlevel = 15;
