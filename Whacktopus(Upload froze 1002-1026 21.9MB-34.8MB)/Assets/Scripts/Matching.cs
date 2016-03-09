@@ -27,7 +27,7 @@ public class Matching : MonoBehaviour {
     */
    
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         totalmatch = 0;
 		ClickManagerParent = gameObject.transform.parent.transform.parent.GetComponent<ClickManager> ();
 		Points = GameObject.Find ("Scripts");
