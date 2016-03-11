@@ -98,6 +98,7 @@ public class States : MonoBehaviour {
 		OctoAnimator.SetBool("One tap", false);
 		OctoAnimator.SetBool("Two tap", false);
 		OctoAnimator.SetBool("Time to Idle", false);
+		OctoAnimator.SetBool("Time to Under", false);
 	}
 
 	public void SetUnder(){
@@ -108,7 +109,6 @@ public class States : MonoBehaviour {
 		for (int cross=0; cross<4; cross++) {
 			this.gameObject.GetComponent<Matching>().Match[cross] = 0;
 		}
-		ResetStatebools();
 	
 	}
 }

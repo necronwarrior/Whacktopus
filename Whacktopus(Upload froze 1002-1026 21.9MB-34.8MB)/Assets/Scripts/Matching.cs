@@ -335,29 +335,21 @@ public class Matching : MonoBehaviour {
 		
 		int i = 0;
 		
-		var TwoCashIn = false;
+		bool TwoCashIn = false;
 		//
-		while (i < Squidmatch.Length && TwoCashIn == false) {
-			//check if squids are the same type and ready for cashing in
-			if ((Squidmatch [i].gameObject.tag == this.gameObject.tag)
-			    && (Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus == OctopusState.Stunned)
-			    && (this.GetComponent<States> ().currentOctopus == OctopusState.Cashed)) {
+		for(int Twos= 0; Twos<4;Twos++)
+		{
 
-				//cash in
-				Squidmatch [i].gameObject.GetComponent<States> ().currentOctopus = OctopusState.Cashed;
-				
-				TwoCashIn = true;
+		if (Match[Twos]>0){
+				i++;
 			}
-			
-
-			i++;
 		}
-
 		//score points
 		//attach to global
 
-		if (TwoCashIn == true) {
+		if (i == 1) {
 			Points.GetComponent<InGameGlobals>().AddPoints(300);
+
 		} else {
 			Points.GetComponent<InGameGlobals>().AddPoints(100);
 		}
