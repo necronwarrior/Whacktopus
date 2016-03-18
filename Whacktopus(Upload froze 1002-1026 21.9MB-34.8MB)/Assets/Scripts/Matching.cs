@@ -286,7 +286,6 @@ public class Matching : MonoBehaviour {
 				     || this.gameObject.GetComponent<States> ().currentOctopus == OctopusState.Idle)) {
 					//set Octopus to stunned
 					this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Stunned;
-					this.gameObject.GetComponent<Renderer> ().material.color = Color.red;
 					//set checkmatches flag
 					this.gameObject.GetComponent<States> ().currentCheck = CheckState.CheckMatch;
 				

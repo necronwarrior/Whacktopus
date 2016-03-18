@@ -6,13 +6,16 @@ public class Jumping : MonoBehaviour {
 	Animator OctoAnimator;
 	AudioClip Spawn;
 	bool OneSpawn;
-
+    float CompoundTime;
+    public float spawn_number;
 	// Use this for initialization
 	void Start () {
 		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
 		
 		Spawn = Resources.Load ("Sounds/Squid-sounds/Suction-Cup-2") as AudioClip;
 		OneSpawn = true;
+        CompoundTime = 0;
+        //spawn_number = Random.Range(1,300);
 	}
 	
 	// Update is called once per frame
@@ -33,6 +36,7 @@ public class Jumping : MonoBehaviour {
 			}
 			
 		}
+
 		if(this.GetComponent<States> ().currentOctopus == OctopusState.Under)//if in a position to jump
 		{
 			//reset timers
@@ -42,18 +46,18 @@ public class Jumping : MonoBehaviour {
 			this.gameObject.GetComponent<States> ().IdleTime = 0;
 
 			//get random number
-			float number = Random.Range(0,300);
 
+            CompoundTime += (Time.deltaTime*50.0f);
 
 			//check for jumping
-			if( number < Time.deltaTime/20000)
+            if( spawn_number < CompoundTime)
 			{
 				//set type
 				//this.GetComponent<States> ().currentType = Squaretype.Blue_Octopus;
 
 				//set to jumping and change color
 				this.gameObject.GetComponent<States> ().currentOctopus = OctopusState.Jumping;
-
+                CompoundTime=0;
 			}
 		}
 
@@ -120,7 +124,10 @@ public class Jumping : MonoBehaviour {
 			    this.GetComponent<States> ().currentOctopus == OctopusState.Stunned)
 			{
 				//set back to being under and change color
-				this.GetComponent<States> ().SetUnder();
+                this.GetComponent<States> ().currentOctopus = OctopusState.Idle;
+                this.GetComponent<States> ().StarroDestroy();
+                OctoAnimator.SetBool("Time to Idle", true);
+                OctoAnimator.SetBool("One tap", false);
 			}
 			
 		}

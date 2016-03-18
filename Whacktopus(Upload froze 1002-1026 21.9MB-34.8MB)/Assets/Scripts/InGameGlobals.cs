@@ -98,7 +98,7 @@ public class InGameGlobals : MonoBehaviour {
 
 	void EndGame(){
 
-		this.gameObject.GetComponent<LoadMenuScreen> ().GameEnd ();
+		this.gameObject.GetComponent<LoadEndScreen> ().GameEnd ();
 	}
 
 }

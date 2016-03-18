@@ -34,6 +34,10 @@ public class States : MonoBehaviour {
 	public float CashTime = 0;
 	Animator OctoAnimator;
 	Material Red_Octo, Green_Octo, Orange_Octo;
+    Object Coin, Star;
+    Object Starro;
+
+    bool Starry, Underonce;
 
 	// Use this for initialization
 	void Start () {
@@ -41,7 +45,10 @@ public class States : MonoBehaviour {
 		Red_Octo = Resources.Load ("Materials/octomaterials/Materials/Red_Octo") as Material;
 		Green_Octo = Resources.Load ("Materials/octomaterials/Materials/Green_Octo") as Material;
 		Orange_Octo = Resources.Load ("Materials/octomaterials/Materials/Orange_Octo") as Material;
-
+        Coin = Resources.Load("Models/Coin") as Object;
+        Star = Resources.Load("Models/Star") as Object;
+        Starry = true;
+        Underonce = true;
 	}
 	
 	// Update is called once per frame
@@ -71,24 +78,39 @@ public class States : MonoBehaviour {
 
 		}
 
-		if (currentOctopus == OctopusState.Idle && !OctoAnimator.GetBool("Spawned")) {
-			OctoAnimator.SetBool("Spawned", false);	
-			OctoAnimator.SetBool("Time to Under", false);
-		}
 
 		if (currentOctopus == OctopusState.Stunned && !OctoAnimator.GetBool("One tap")){
-			OctoAnimator.SetBool("Spawned", false);
 			OctoAnimator.SetBool("One tap", true);
+            Starro = Instantiate(Star, 
+                        new Vector3(gameObject.transform.parent.transform.position.x+0.15f,
+                        gameObject.transform.parent.transform.position.y,
+                        gameObject.transform.parent.transform.position.z-0.6f), 
+                        Quaternion.Euler(new Vector3(0,0,0)));
+            Starry = false;
 		}
 
 		if (currentOctopus == OctopusState.Cashed && !OctoAnimator.GetBool("Two tap")){
 			OctoAnimator.SetBool("Two tap", true);
+            float CoinRand;
+            int HowMany = Random.Range(1,5);
+            for(int i =0; i< HowMany;i++){
+            CoinRand = Random.Range(0,360);
+            Instantiate(Coin, 
+                        new Vector3(gameObject.transform.parent.transform.position.x,
+                                         gameObject.transform.parent.transform.position.y+1.0f,
+                                          gameObject.transform.parent.transform.position.z), 
+                        Quaternion.Euler(new Vector3(0,CoinRand,90)));
+            }
+            StarroDestroy();
 		}
 
-		if (currentOctopus == OctopusState.Under){
+        if (currentOctopus == OctopusState.Under && Underonce==true){
+            this.GetComponent<Jumping>().spawn_number = Random.Range(1,300);
 			this.transform.gameObject.GetComponent<AudioSource>().Stop();
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,-1.5f,gameObject.transform.parent.position.z);
 			ResetStatebools();
+            StarroDestroy();
+            Underonce=false;
 		}
 
 	}
@@ -101,14 +123,21 @@ public class States : MonoBehaviour {
 		OctoAnimator.SetBool("Time to Under", false);
 	}
 
+    public void StarroDestroy()
+    {
+        if(Starry==false)
+        {
+            Destroy(Starro);
+            Starry= true;
+        }
+    }
+
 	public void SetUnder(){
 
-
 		currentOctopus = OctopusState.Under;
-		this.gameObject.GetComponent<Renderer>().material.color = Color.white;
 		for (int cross=0; cross<4; cross++) {
 			this.gameObject.GetComponent<Matching>().Match[cross] = 0;
 		}
-	
+        Underonce=true;
 	}
 }
