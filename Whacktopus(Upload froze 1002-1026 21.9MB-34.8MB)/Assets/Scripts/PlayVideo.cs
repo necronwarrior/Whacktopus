@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿/*Deprecated
+ * 
+ * using UnityEngine;
 using System.Collections;
 
 public class PlayVideo : MonoBehaviour {
@@ -16,4 +18,4 @@ public class PlayVideo : MonoBehaviour {
 	void Update () {
 		Water.Play ();
 	}
-}
+}*/

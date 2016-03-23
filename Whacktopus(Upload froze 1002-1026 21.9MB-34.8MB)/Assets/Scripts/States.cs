@@ -35,7 +35,7 @@ public class States : MonoBehaviour {
 	Animator OctoAnimator;
 	Material Red_Octo, Green_Octo, Orange_Octo;
     Object Coin, Star;
-    Object Starro;
+    GameObject Starro;
 
     bool Starry, Underonce;
 
@@ -85,7 +85,9 @@ public class States : MonoBehaviour {
                         new Vector3(gameObject.transform.parent.transform.position.x+0.15f,
                         gameObject.transform.parent.transform.position.y,
                         gameObject.transform.parent.transform.position.z-0.6f), 
-                        Quaternion.Euler(new Vector3(0,0,0)));
+                        Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+
+            Starro.transform.parent = transform;
             Starry = false;
 		}
 

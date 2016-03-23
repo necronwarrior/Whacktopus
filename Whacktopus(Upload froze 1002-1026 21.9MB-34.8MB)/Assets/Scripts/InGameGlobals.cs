@@ -80,9 +80,6 @@ public class InGameGlobals : MonoBehaviour {
 	void IncreasePoints(){
 
 		PointsNeeded = PointsNeeded * 1.5;
-
-		//round to 2 sig fig
-			//Math.Round (PointsNeeded, 2);
 		
 	}
 
