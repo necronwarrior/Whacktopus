@@ -329,12 +329,9 @@ public class Matching : MonoBehaviour {
 
 	void Cashedin(){
 		
-		Vector3 origin = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
-		Collider[] Squidmatch = Physics.OverlapSphere (origin, 1f);
+//		Vector3 origin = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
 		
 		int i = 0;
-		
-		bool TwoCashIn = false;
 		//
 		for(int Twos= 0; Twos<4;Twos++)
 		{

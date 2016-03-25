@@ -13,6 +13,7 @@ public class ExitGame : MonoBehaviour
 
 	public void OnClick() 
 	{
+		PlayerPrefs.DeleteAll ();
 	this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Click);
 			Application.Quit(); 
 	}

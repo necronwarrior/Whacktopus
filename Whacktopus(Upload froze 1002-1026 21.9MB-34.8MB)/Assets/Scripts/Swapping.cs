@@ -10,7 +10,6 @@ public class Swapping : MonoBehaviour {
 	bool MouseHeld, HasBeenHeld;
 
     GameObject Passover;
-    bool Oneswap = true;
 
 	float new_y;
 
@@ -136,7 +135,7 @@ public class Swapping : MonoBehaviour {
                                 
                                 ClickManagerParent.CurrentOctoObject.transform.gameObject.GetComponent<Matching>().ObjectsHits [swappee] = HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee];
                                 HitFromHeldOcto.collider.gameObject.GetComponent<Matching>().ObjectsHits [swappee] = Passover;
-                                Oneswap=true;
+                              
                             }
 
 

@@ -11,24 +11,24 @@ public class InGameGlobals : MonoBehaviour {
 
 	public int Level = 1;
 	
-	 double PointsNeeded = 2000;
+	double PointsNeeded = 2000;
 	
-	 double TotalPoints = 0;
+	double TotalPoints = 0;
 	
-	 double LevelPoints = 0;
+	double LevelPoints = 0;
 
-    public Text TimeCount, ScoreCount;
+    public Text TimeCount, EndScore, ScoreCount; 
 
 	public Image Time_limit, Coin_limit;
 
-
-
+	bool EndGameOnce;
 	// Use this for initialization
 	void Start () {
 		BASE_TIMER = 30.0f;
 		GameTimer = BASE_TIMER;
 		pointadditive = 0.0f;
 		nextlevel = 15;
+		EndGameOnce =true;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +38,7 @@ public class InGameGlobals : MonoBehaviour {
 
 		GameTimer -= Time.deltaTime;
 
-		if (GameTimer <= 0) {
+		if (GameTimer <= 0 && EndGameOnce ==true) {
 			EndGame ();
 		} else {
 			timechange = (float)(GameTimer * 4.2);
@@ -80,6 +80,9 @@ public class InGameGlobals : MonoBehaviour {
 	void IncreasePoints(){
 
 		PointsNeeded = PointsNeeded * 1.5;
+
+		//round to 2 sig fig
+			//Math.Round (PointsNeeded, 2);
 		
 	}
 
@@ -94,7 +97,17 @@ public class InGameGlobals : MonoBehaviour {
 	}
 
 	void EndGame(){
+		//LOOK I MADE CODE JACK PLS FIX
+		if(PlayerPrefs.HasKey("FinalScore"))
+		{
+			int concatScore = PlayerPrefs.GetInt("FinalScore");
+			concatScore += (int)TotalPoints;
+			PlayerPrefs.SetInt("FinalScore", concatScore);
+		}else{
+			PlayerPrefs.SetInt("FinalScore", (int)TotalPoints);
+		}
 
+		EndGameOnce =false;
 		this.gameObject.GetComponent<LoadEndScreen> ().GameEnd ();
 	}
 
