@@ -33,7 +33,7 @@ public class States : MonoBehaviour {
 	public float StunTime = 0;
 	public float CashTime = 0;
 	Animator OctoAnimator;
-	Material Red_Octo, Green_Octo, Orange_Octo;
+	Material Red_Octo, Green_Octo, Orange_Octo, Red_Octo_Stun, Green_Octo_Stun, Orange_Octo_Stun;
     Object Coin, Star;
     GameObject Starro;
 
@@ -45,6 +45,9 @@ public class States : MonoBehaviour {
 		Red_Octo = Resources.Load ("Materials/octomaterials/Materials/Red_Octo") as Material;
 		Green_Octo = Resources.Load ("Materials/octomaterials/Materials/Green_Octo") as Material;
 		Orange_Octo = Resources.Load ("Materials/octomaterials/Materials/Orange_Octo") as Material;
+		Red_Octo_Stun = Resources.Load ("Materials/octomaterials/Materials/Red_Octo_Stun") as Material;
+		Green_Octo_Stun = Resources.Load ("Materials/octomaterials/Materials/Green_Octo_Stun") as Material;
+		Orange_Octo_Stun = Resources.Load ("Materials/octomaterials/Materials/Orange_Octo_Stun") as Material;
         Coin = Resources.Load("Models/Coin") as Object;
         Star = Resources.Load("Models/Star") as Object;
         Starry = true;
@@ -89,6 +92,16 @@ public class States : MonoBehaviour {
 
             Starro.transform.parent = transform;
             Starry = false;
+			if(gameObject.tag == "Orange_octo"){
+				gameObject.GetComponent<Renderer>().material = Orange_Octo_Stun;                            
+			}
+			if(gameObject.tag == "Red_octo"){
+				gameObject.GetComponent<Renderer>().material = Red_Octo_Stun;                            
+			}
+			if(gameObject.tag == "Green_octo"){
+				gameObject.GetComponent<Renderer>().material = Green_Octo_Stun;                            
+			}
+
 		}
 
 		if (currentOctopus == OctopusState.Cashed && !OctoAnimator.GetBool("Two tap")){

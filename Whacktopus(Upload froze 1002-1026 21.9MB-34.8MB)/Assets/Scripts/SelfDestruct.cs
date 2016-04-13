@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Levelling : MonoBehaviour {
-
+public class SelfDestruct : MonoBehaviour {
+	float step;
 	// Use this for initialization
 	void Start () {
-	
+		step = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		step += Time.deltaTime;
+		if (step > 3.0f) {
+			Destroy(gameObject);
+		}
 	}
 }

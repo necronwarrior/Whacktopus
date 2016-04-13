@@ -3,10 +3,15 @@ using System.Collections;
 
 public class LoadMenuScreen : MonoBehaviour {
 	public ParticleSystem MainPart;
-
+	public GameObject Foam;
+	GameObject MainCam;
+	
+	bool Foamy, Foamystart;
 	// Use this for initialization
 	void Start () {
-	
+		Foamy = false;
+		Foamystart = true;
+		MainCam = GameObject.Find("Main Camera");
 	}
 
 	public void GameEnd () {
@@ -19,13 +24,28 @@ public class LoadMenuScreen : MonoBehaviour {
 	}
 
 	IEnumerator LoadLVL() {
-		MainPart.Play (); //Cascade bubbles
-		yield return new WaitForSeconds(1);
-		
-		yield return new WaitForSeconds(1);
-		MainPart.Stop (); //Prevent looping of particles
-		yield return new WaitForSeconds(1);
+		Foamy = true;
+		yield return new WaitForSeconds(3);
 		Application.LoadLevel("MainScreen"); //load the instructions screen
-
+		
+	}
+	
+	void Update()
+	{
+		if (Foamystart == true) {
+			Foam.transform.position = 		Vector3.MoveTowards (Foam.transform.position, 
+			                                                 new Vector3 (MainCam.transform.position.x , MainCam.transform.position.y-600.0f, MainCam.transform.position.z+10.0f),
+			                                                 10.0f);
+			if (Foam.transform.position ==  new Vector3 (MainCam.transform.position.x , MainCam.transform.position.y-600.0f, MainCam.transform.position.z+10.0f))
+			{
+				Foamystart=false;
+			}
+			
+		}
+		if (Foamy == true) {
+			Foam.transform.position = 		Vector3.MoveTowards (Foam.transform.position, 
+			                                                 new Vector3 (MainCam.transform.position.x , MainCam.transform.position.y, MainCam.transform.position.z+10.0f),
+			                                                 10.0f);
+		}
 	}
 }

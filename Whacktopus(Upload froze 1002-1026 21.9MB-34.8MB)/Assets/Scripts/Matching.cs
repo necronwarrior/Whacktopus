@@ -4,6 +4,7 @@ using System.Collections;
 public class Matching : MonoBehaviour {
 
 	GameObject Points;
+	GameObject MainCam;
 
 	public AudioClip Hit, Cash;
 
@@ -25,9 +26,21 @@ public class Matching : MonoBehaviour {
     2 = up
     3 = right
     */
+
+	Object Nice, Great, Awesome, Fantastic, Wonderful, Amazing;
+	GameObject Word;
    
 	// Use this for initialization
 	void Start () {
+		MainCam = GameObject.Find("Main Camera");
+
+		Nice = Resources.Load("Art assets/UI/In_Game/Excitement words/Nice") as Object;
+		Great = Resources.Load("Art assets/UI/In_Game/Excitement words/Great") as Object;
+		Awesome = Resources.Load("Art assets/UI/In_Game/Excitement words/Awesome") as Object;
+		Fantastic = Resources.Load("Art assets/UI/In_Game/Excitement words/Fantastic") as Object;
+		Wonderful = Resources.Load("Art assets/UI/In_Game/Excitement words/Wonderful") as Object;
+		Amazing = Resources.Load("Art assets/UI/In_Game/Excitement words/Amazing") as Object;
+
         totalmatch = 0;
 		ClickManagerParent = gameObject.transform.parent.transform.parent.GetComponent<ClickManager> ();
 		Points = GameObject.Find ("Scripts");
@@ -152,8 +165,6 @@ public class Matching : MonoBehaviour {
         {
 			//set matches for each direction to 0
 
-			int totalmatch = 1;
-
             for(int cross=0;cross<4;cross++)
             {
                 if(ObjectsHits[cross]!=null)
@@ -182,8 +193,6 @@ public class Matching : MonoBehaviour {
 
     void MegaCashing()
     {
-
-
         if (horizontalmatch)
         {
             if (ObjectsHits[1]!=null)
@@ -222,34 +231,7 @@ public class Matching : MonoBehaviour {
             }
         }
 
-        //score points if match >=3
-        if (totalmatch >=3){
-            //attach to global
-            switch (totalmatch)
-            {
-                case 3:
-                    Points.GetComponent<InGameGlobals>().AddPoints(600);
-                    break;
-                case 4:
-                    Points.GetComponent<InGameGlobals>().AddPoints(1200);
-                    break;
-                case 5:
-                    Points.GetComponent<InGameGlobals>().AddPoints(2000);
-                    break;
-                case 6:
-                    Points.GetComponent<InGameGlobals>().AddPoints(3000);
-                    break;
-                case 7:
-                    Points.GetComponent<InGameGlobals>().AddPoints(4200);
-                    break;
-                case 8:
-                    Points.GetComponent<InGameGlobals>().AddPoints(5600);
-                    break;
-                case 9:
-                    Points.GetComponent<InGameGlobals>().AddPoints(9001);
-                    break;   
-            }
-        }
+        
         Cashing();
     }
 
@@ -349,7 +331,85 @@ public class Matching : MonoBehaviour {
 		} else {
 			Points.GetComponent<InGameGlobals>().AddPoints(100);
 		}
-
+		//score points if match >=3
+		if (totalmatch >=2){
+			//attach to global
+			switch (totalmatch)
+			{
+			case 2:
+				Points.GetComponent<InGameGlobals>().AddPoints(300);
+				Word = Instantiate(Nice,
+				                  	new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 3:
+				Points.GetComponent<InGameGlobals>().AddPoints(600);
+				Word = Instantiate(Great,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 4:
+				Points.GetComponent<InGameGlobals>().AddPoints(1200);
+				Word = Instantiate(Awesome,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 5:
+				Points.GetComponent<InGameGlobals>().AddPoints(2000);
+				Word = Instantiate(Fantastic,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 6:
+				Points.GetComponent<InGameGlobals>().AddPoints(3000);
+				Word = Instantiate(Wonderful,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 7:
+				Points.GetComponent<InGameGlobals>().AddPoints(4200);
+				Word = Instantiate(Amazing,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 8:
+				Points.GetComponent<InGameGlobals>().AddPoints(5600);
+				Word = Instantiate(Amazing,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;
+			case 9:
+				Points.GetComponent<InGameGlobals>().AddPoints(9001);
+				Word = Instantiate(Amazing,
+				                   new Vector3(transform.position.x,
+				            transform.position.y+1.0f,
+				            transform.position.z),
+				                   Quaternion.Euler(new Vector3(0,0,0))) as GameObject;
+				Word.transform.LookAt((MainCam.transform.position*-1.0f));
+				break;   
+			}
+		}
 	}
 	
 

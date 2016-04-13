@@ -29,6 +29,12 @@ public class InGameGlobals : MonoBehaviour {
 		pointadditive = 0.0f;
 		nextlevel = 15;
 		EndGameOnce =true;
+
+		if (PlayerPrefs.HasKey ("FinalScore")) {
+			EndScore.text = PlayerPrefs.GetInt ("FinalScore").ToString ();
+		} else {
+			EndScore.text ="0";
+		}
 	}
 	
 	// Update is called once per frame
@@ -98,17 +104,18 @@ public class InGameGlobals : MonoBehaviour {
 
 	void EndGame(){
 		//LOOK I MADE CODE JACK PLS FIX
-		if(PlayerPrefs.HasKey("FinalScore"))
-		{
-			int concatScore = PlayerPrefs.GetInt("FinalScore");
-			concatScore += (int)TotalPoints;
-			PlayerPrefs.SetInt("FinalScore", concatScore);
-		}else{
-			PlayerPrefs.SetInt("FinalScore", (int)TotalPoints);
-		}
+		if (EndGameOnce == true) {
+			if (PlayerPrefs.HasKey ("FinalScore")) {
+				int concatScore = PlayerPrefs.GetInt ("FinalScore");
+				concatScore += (int)TotalPoints;
+				PlayerPrefs.SetInt ("FinalScore", concatScore);
+			} else {
+				PlayerPrefs.SetInt ("FinalScore", (int)TotalPoints);
+			}
 
-		EndGameOnce =false;
-		this.gameObject.GetComponent<LoadEndScreen> ().GameEnd ();
+			EndGameOnce = false;
+			this.gameObject.GetComponent<LoadEndScreen> ().GameEnd ();
+		}
 	}
 
 }

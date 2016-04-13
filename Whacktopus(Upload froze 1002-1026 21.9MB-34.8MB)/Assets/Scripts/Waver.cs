@@ -5,9 +5,10 @@ public class Waver : MonoBehaviour
 {
 	float scale = 0.1f;
 	float speed = 4.0f;
-	float noiseStrength = 1f;
+	float noiseStrength = 0.9f;
 	float noiseWalk = 5f;
-	
+	float rando = 0.2f;
+
 	private Vector3[] baseHeight;
 	
 	void Update () {
@@ -25,7 +26,8 @@ public class Waver : MonoBehaviour
 			vertices[i] = vertex;
 		}
 
-		GetComponent<MeshRenderer> ().material.mainTextureOffset = new Vector2 ((Time.time * 2.0f), 0);
+		//rando = Random.Range (-1, 1);
+		GetComponent<MeshRenderer> ().material.mainTextureOffset = new Vector2 ((Time.time * rando), (Time.time * rando));
 
 		mesh.vertices = vertices;
 		mesh.RecalculateNormals();
