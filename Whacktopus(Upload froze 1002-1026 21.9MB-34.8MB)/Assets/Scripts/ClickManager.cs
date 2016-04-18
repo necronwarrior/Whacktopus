@@ -4,12 +4,12 @@ using System.Collections;
 public class ClickManager : MonoBehaviour {
 
 	float Timing;
-	public int Held;
+	int Held;
 	//held 0 off
 	//held 1 Click
 	//held 2 Hold
 	//held 
-	public bool OneClick;
+	bool OneClick;
 
 	public GameObject CurrentOctoObject;
 
@@ -70,15 +70,18 @@ public class ClickManager : MonoBehaviour {
 		              Color.black,
 		              0.5f);
 		if(Physics.Raycast( Mouseinput, out OctoHit, 100 )){
-			if (OctoHit.collider.gameObject.transform.parent.tag== "Green_octo" ||
-			    OctoHit.collider.gameObject.transform.parent.tag== "Orange_octo" ||
-			    OctoHit.collider.gameObject.transform.parent.tag== "Red_octo" )
+			if (OctoHit.collider != null)
 			{
-				CurrentOctoObject = OctoHit.collider.gameObject;
-				//if(this.gameObject== CurrentOctoObject.transform.parent.gameObject)
-				//{
-				return true;
-				//}
+				if (OctoHit.collider.gameObject.transform.parent.tag== "Green_octo" ||
+				    OctoHit.collider.gameObject.transform.parent.tag== "Orange_octo" ||
+				    OctoHit.collider.gameObject.transform.parent.tag== "Red_octo" )
+				{
+					CurrentOctoObject = OctoHit.collider.gameObject;
+					//if(this.gameObject== CurrentOctoObject.transform.parent.gameObject)
+					//{
+					return true;
+					//}
+				}
 			}
 		}
         CurrentOctoObject = null;

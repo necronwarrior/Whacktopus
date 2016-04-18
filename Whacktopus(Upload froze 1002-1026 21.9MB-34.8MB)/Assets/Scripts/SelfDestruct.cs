@@ -11,7 +11,7 @@ public class SelfDestruct : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		step += Time.deltaTime;
-		if (step > 3.0f) {
+		if (step > 1.0f) {
 			Destroy(gameObject);
 		}
 	}
