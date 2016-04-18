@@ -4,7 +4,7 @@ using System.Collections;
 public class Jumping : MonoBehaviour {
 
 	Animator OctoAnimator;
-	AudioClip Spawn;
+	AudioClip Spawn, Stun;
 	bool OneSpawn;
     float CompoundTime;
     public float spawn_number;
@@ -12,7 +12,7 @@ public class Jumping : MonoBehaviour {
 	void Start () {
 		OctoAnimator = gameObject.GetComponentsInParent<Animator>()[0];
 		
-		Spawn = Resources.Load ("Sounds/Squid-sounds/Suction-Cup-2") as AudioClip;
+		Spawn = Resources.Load ("Sounds/Octo_sounds/Spawn/Water_spawn_1") as AudioClip;
 		OneSpawn = true;
         CompoundTime = 0;
         //spawn_number = Random.Range(1,300);
@@ -69,11 +69,11 @@ public class Jumping : MonoBehaviour {
 
 			gameObject.transform.parent.position = new Vector3(gameObject.transform.parent.position.x,(float)(-1.5 + (1.5 * this.gameObject.GetComponent<States> ().JumpTime/1.4)),gameObject.transform.parent.position.z);
 
-			if(this.gameObject.GetComponent<States> ().JumpTime >= 0.6 &&
-			   this.GetComponent<States> ().currentOctopus == OctopusState.Jumping &&
+			if(GetComponent<States> ().JumpTime >= 0.6 &&
+			   GetComponent<States> ().currentOctopus == OctopusState.Jumping &&
 			   OneSpawn == true)
 			{
-				this.transform.gameObject.GetComponent<AudioSource>().PlayOneShot(Spawn);
+				GetComponent<AudioSource>().PlayOneShot(Spawn);
 				OneSpawn =false;
                 gameObject.transform.GetComponent<SphereCollider>().enabled = true;
 			}
@@ -113,7 +113,7 @@ public class Jumping : MonoBehaviour {
 			
 		}
 
-		if (this.GetComponent<States> ().currentOctopus == OctopusState.Stunned) //currently stunned
+		if (GetComponent<States> ().currentOctopus == OctopusState.Stunned) //currently stunned
 		{
 			//set current time jumping
 			this.gameObject.GetComponent<States> ().StunTime += Time.deltaTime;

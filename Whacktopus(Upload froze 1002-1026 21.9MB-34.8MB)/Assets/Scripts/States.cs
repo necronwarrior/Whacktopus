@@ -36,6 +36,7 @@ public class States : MonoBehaviour {
 	Material Red_Octo, Green_Octo, Orange_Octo, Red_Octo_Stun, Green_Octo_Stun, Orange_Octo_Stun;
     Object Coin, Star;
     GameObject Starro;
+	AudioClip Stun;
 
     bool Starry, Underonce;
 
@@ -50,6 +51,7 @@ public class States : MonoBehaviour {
 		Orange_Octo_Stun = Resources.Load ("Materials/octomaterials/Materials/Orange_Octo_Stun") as Material;
         Coin = Resources.Load("Models/Coin") as Object;
         Star = Resources.Load("Models/Star") as Object;
+		Stun = Resources.Load ("Sounds/Octo_sounds/Stun/Stun") as AudioClip;
         Starry = true;
         Underonce = true;
 	}
@@ -83,6 +85,7 @@ public class States : MonoBehaviour {
 
 
 		if (currentOctopus == OctopusState.Stunned && !OctoAnimator.GetBool("One tap")){
+			GetComponent<AudioSource>().PlayOneShot(Stun);
 			OctoAnimator.SetBool("One tap", true);
             Starro = Instantiate(Star, 
                         new Vector3(gameObject.transform.parent.transform.position.x+0.15f,
